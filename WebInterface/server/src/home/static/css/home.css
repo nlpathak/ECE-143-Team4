@@ -4,11 +4,23 @@ body {
   margin:0;
 }
 
-h1 {
+h1, label, input {
   font-family: 'Lato', sans-serif;
   font-weight:300;
   letter-spacing: 2px;
   font-size:48px;
+}
+input[type=text] {
+  border:1px solid white;
+  border-radius:50px;
+  text-align: center;
+}
+input[type=submit] {
+  border:1px solid white;
+  border-radius:50px;
+  text-align: center;
+  padding: 5px 20px;
+  background-color:white;
 }
 p {
   font-family: 'Lato', sans-serif;
@@ -24,7 +36,7 @@ p {
   color:white;
 }
 .logo {
-  width:50px;
+  width:80px;
   fill:white;
   padding-right:15px;
   display:inline-block;
@@ -99,7 +111,7 @@ p {
   .content {
     height:30vh;
   }
-  h1 {
+  h1, label, input {
     font-size:24px;
   }
 }
