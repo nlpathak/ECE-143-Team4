@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from home.forms import UserForm
 
 def home(request):
     """
@@ -7,5 +8,9 @@ def home(request):
         :param request:
         :return :
     """
-
-    return render(request, 'home.html')
+    form = None
+    if request.method == 'GET':
+        form = UserForm()
+    elif request.method =='POST':
+        form = request.form
+    return render(request, 'home.html', context = {'form':form})
