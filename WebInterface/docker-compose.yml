@@ -14,7 +14,7 @@ services:
 
     # Web Server
     web:
-        build: 
+        build:
             context: ./server
         environment: 
             - BEARER_TOKEN=${BEARER_TOKEN}
@@ -23,6 +23,4 @@ services:
             - ./server/src:/app
         ports:
             - "8000:5454"
-        depends_on:
-            - db
-        container_name: web_serv
+        container_name: web-serv
