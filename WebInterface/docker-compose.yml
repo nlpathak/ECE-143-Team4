@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
 
-    # MySQL Server
+    # postgres Server
     db:
         image: postgres
         restart: always
@@ -14,7 +14,7 @@ services:
 
     # Web Server
     web:
-        build: 
+        build:
             context: ./server
         environment: 
             - BEARER_TOKEN=${BEARER_TOKEN}
@@ -23,6 +23,6 @@ services:
             - ./server/src:/app
         ports:
             - "8000:5454"
+        container_name: web-serv
         depends_on:
             - db
-        container_name: web_serv

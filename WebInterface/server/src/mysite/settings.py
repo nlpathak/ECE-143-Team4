@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home.apps.HomeConfig',
     'polls.apps.PollsConfig',
-    'user.apps.UserConfig'
+    'user.apps.UserConfig',
+    'tweet.apps.TweetConfig'
 ]
 
 MIDDLEWARE = [
