@@ -1,4 +1,3 @@
-import get_tweets_with_bearer_token
 import get_users_with_bearer_token
 import user_tweets
 import pickle
