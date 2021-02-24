@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+
+    # postgres Server
+    db:
+        image: postgres
+        restart: always
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        container_name: tweet-db
+
+    # Web Server
+    web:
+        build:
+            context: ./server
+        environment: 
+            - BEARER_TOKEN=${BEARER_TOKEN}
+        command: python manage.py runserver 0.0.0.0:5454
+        volumes:
+            - ./server/src:/app
+        ports:
+            - "8000:5454"
+        container_name: web-serv
+        depends_on:
+            - db
