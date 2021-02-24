@@ -36,7 +36,6 @@ def create_headers(bearer_token):
 
 def connect_to_endpoint(url, headers, params):
     response = requests.request("GET", url, headers=headers, params=params)
-    print(response.status_code)
     if response.status_code != 200:
         raise Exception(
             "Request returned an error: {} {}".format(
@@ -60,9 +59,11 @@ def main(user_id, tweetCount):
         tweetDates.append(json_response['data'][tweetIdx]['created_at'])
     params = {**params, 'pagination_token':json_response['meta']['next_token']}
     pagination_count = 1 #controls incremental amounts of tweets by max_count of pagination
+    print('Pagination progress: ', pagination_count, '/', int(tweetCount / 100))
     while params['pagination_token'] and pagination_count < tweetCount/100:
         pagination_count += 1
         json_response = connect_to_endpoint(url, headers, params)
+        print('Pagination progress: ', pagination_count, '/', int(tweetCount/100))
         try:
             params['pagination_token'] = json_response['meta']['next_token']
         except:
@@ -70,6 +71,8 @@ def main(user_id, tweetCount):
         for tweetIdx in range(len(json_response['data'])):
             tweetList.append(json_response['data'][tweetIdx]['text'])
             tweetDates.append(json_response['data'][tweetIdx]['created_at'])
+    if pagination_count != int(tweetCount/100):
+        print('Reached end of content from user before specified request amount.')
 
     return tweetList, tweetDates
 

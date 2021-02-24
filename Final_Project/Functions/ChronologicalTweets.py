@@ -19,10 +19,24 @@ print('Chronological tweets analysis, by user')
 while input("new search? (y/n): ") == 'y':
     #Data Collection
     username = input("Input twitter username: ")
-    tweetCount = int(input("Input quantity of most recent tweets to analyze (qty to within 100's increment, max 3,200): "))
     userDat = get_users_with_bearer_token.main(username)
+    while input('Username found: ' + userDat['data'][0]['name'] + '. Proceed with search? (y/n): ') != 'y':
+        username = input("Input twitter username: ")
+        userDat = get_users_with_bearer_token.main(username)
+    tweetCount = int(input("Input quantity of most recent tweets to analyze (100-3,200 in 100 intervals): "))
+    assert isinstance(tweetCount, int) and 100 <= tweetCount <= 3200
+    if input('Select the model to use: Tf-Idf (1) or Count Vectorizer (2): ') == '1':
+        model = TfIdf_Model
+        vectorizer = TfIdf_Vectorizer
+        modelLabel = 'Tf-Idf'
+    else:
+        model = CountVect_Model
+        vectorizer = CountVect_Vect
+        modelLabel = 'Count Vectorizer'
+
+    print('Retrieving up to ', tweetCount, ' of the most recent tweets of user: ', userDat['data'][0]['name'], '...')
     userTweets, tweetDates = user_tweets.main(userDat['data'][0]['id'], tweetCount)
-    tweetObj = MF.predict(userTweets, CountVect_Vect, CountVect_Model, silence=True)
+    tweetObj = MF.predict(userTweets, vectorizer, model, silence=True)
     tweetDict = {'tweets':userTweets, 'tweetDates':tweetDates, 'prediction': [predict for x, predict, y in tweetObj], 'confidence': [conf for x, y, conf in tweetObj]}
     start = date(int(tweetDict['tweetDates'][-1][0:4]), int(tweetDict['tweetDates'][-1][5:7]), int(tweetDict['tweetDates'][-1][8:10]))
     end = date(int(tweetDict['tweetDates'][0][0:4]), int(tweetDict['tweetDates'][0][5:7]), int(tweetDict['tweetDates'][0][8:10]))
@@ -30,11 +44,20 @@ while input("new search? (y/n): ") == 'y':
     #Processing Data
     #daywiseTweets stores the quantity of tweets in a day aswell as the net quantity of positive/negative tweets
     daywiseTweets = np.zeros((2,(end - start).days))
+    #mostPos/Neg stores the index of the day aswell as the day object and tweets that occured in that day
+    mostPos = [[0],[], []]
+    mostNeg = [[0],[], []]
     for tweetIdx in range(len(tweetDict['tweetDates'])):
         tweetDate = date(int(tweetDict['tweetDates'][tweetIdx][0:4]), int(tweetDict['tweetDates'][tweetIdx][5:7]),
                    int(tweetDict['tweetDates'][tweetIdx][8:10]))
         daywiseTweets[0][(tweetDate-start).days-1] += 1
         daywiseTweets[1][(tweetDate-start).days-1] += 1 if tweetDict['prediction'][tweetIdx] == 'Positive' else -1
+        if daywiseTweets[1][(tweetDate-start).days-1] > mostPos[0]:
+            mostPos[0] = daywiseTweets[1][(tweetDate-start).days-1]
+            mostPos[1] = tweetDate
+        if daywiseTweets[1][(tweetDate-start).days-1] < mostNeg[0]:
+            mostNeg[0] = daywiseTweets[1][(tweetDate-start).days-1]
+            mostNeg[1] = tweetDate
 
     #processing on daywiseTweets for data visualization
     extrema = np.maximum(np.max(daywiseTweets[1]),np.abs(np.min(daywiseTweets[1])))
@@ -45,9 +68,28 @@ while input("new search? (y/n): ") == 'y':
     cmap = cm.get_cmap('RdYlGn')
     with plt.style.context('dark_background'):
         plt.bar(range(len(daywiseTweets[0])), daywiseTweets[0], color=cmap(daywiseTweets[1]))
-        plt.title('Chronological ordering and positivity indication of ' + userDat['data'][0]['name'] + '\'s tweets')
-        plt.xlabel('days from ' + str(start))
-        plt.ylabel('tweet quantity by day')
+        plt.title('Chronological ordering and positivity indication of ' + userDat['data'][0]['name'] + '\'s tweets', fontsize=40)
+        plt.xlabel('days from ' + str(start) + ', Model used: ' + modelLabel + ', Span: ' + str(start) + ' - ' + str(end), fontsize=30)
+        plt.ylabel('tweet quantity by day, Avg Tweets/Day: ' + '{:.2f}'.format(np.average(daywiseTweets[0])), fontsize=25)
     plt.show()
 
+    for tIdx, tDate in enumerate(tweetDates):
+        if int(tDate[0:4]) == mostPos[1].year and int(tDate[5:7]) == mostPos[1].month and int(tDate[8:10]) == mostPos[1].day:
+            mostPos[2].append(userTweets[tIdx])
+        if int(tDate[0:4]) == mostNeg[1].year and int(tDate[5:7]) == mostNeg[1].month and int(tDate[8:10]) == mostNeg[1].day:
+            mostNeg[2].append(userTweets[tIdx])
+    #Most Positive Day
+    print('-------------------------------------------------------------')
+    print('Showing all tweets on most positive day, ', str(mostPos[1]), ': \n')
+    for tIdx in range(len(mostPos[2])):
+        print(mostPos[2][tIdx])
+    print('-------------------------------------------------------------\n')
 
+    #Most Negative Day
+    print('-------------------------------------------------------------')
+    print('Showing all tweets on most negative day, ', str(mostNeg[1]), ': \n')
+    for tIdx in range(len(mostNeg[2])):
+        print(mostNeg[2][tIdx])
+    print('-------------------------------------------------------------')
+
+exit('Thank you for using Chronological Tweet analyzer')
