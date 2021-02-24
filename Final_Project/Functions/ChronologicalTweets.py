@@ -44,9 +44,9 @@ while input("new search? (y/n): ") == 'y':
     #Processing Data
     #daywiseTweets stores the quantity of tweets in a day aswell as the net quantity of positive/negative tweets
     daywiseTweets = np.zeros((2,(end - start).days))
-    #mostPos/Neg stores the index of the day aswell as the day object and tweets that occured in that day
-    mostPos = [[0],[], []]
-    mostNeg = [[0],[], []]
+    #mostPos/Neg stores the index of the day aswell as the day object and tweets that occured in that day and most pos/neg tweet overall
+    mostPos = [[0],[], [], [0], [0]]
+    mostNeg = [[0],[], [], [0], [0]]
     for tweetIdx in range(len(tweetDict['tweetDates'])):
         tweetDate = date(int(tweetDict['tweetDates'][tweetIdx][0:4]), int(tweetDict['tweetDates'][tweetIdx][5:7]),
                    int(tweetDict['tweetDates'][tweetIdx][8:10]))
@@ -55,9 +55,15 @@ while input("new search? (y/n): ") == 'y':
         if daywiseTweets[1][(tweetDate-start).days-1] > mostPos[0]:
             mostPos[0] = daywiseTweets[1][(tweetDate-start).days-1]
             mostPos[1] = tweetDate
+        if tweetDict['confidence'][tweetIdx] > mostPos[4] and tweetDict['prediction'][tweetIdx] == 'Positive':
+            mostPos[3] = tweetIdx
+            mostPos[4] = tweetDict['confidence'][tweetIdx]
         if daywiseTweets[1][(tweetDate-start).days-1] < mostNeg[0]:
             mostNeg[0] = daywiseTweets[1][(tweetDate-start).days-1]
             mostNeg[1] = tweetDate
+        if tweetDict['confidence'][tweetIdx] > mostNeg[4] and tweetDict['prediction'][tweetIdx] == 'Negative':
+            mostNeg[3] = tweetIdx
+            mostNeg[4] = tweetDict['confidence'][tweetIdx]
 
     #processing on daywiseTweets for data visualization
     extrema = np.maximum(np.max(daywiseTweets[1]),np.abs(np.min(daywiseTweets[1])))
@@ -78,18 +84,22 @@ while input("new search? (y/n): ") == 'y':
             mostPos[2].append(userTweets[tIdx])
         if int(tDate[0:4]) == mostNeg[1].year and int(tDate[5:7]) == mostNeg[1].month and int(tDate[8:10]) == mostNeg[1].day:
             mostNeg[2].append(userTweets[tIdx])
-    #Most Positive Day
+    #Most Positive Day/ tweet
     print('-------------------------------------------------------------')
     print('Showing all tweets on most positive day, ', str(mostPos[1]), ': \n')
     for tIdx in range(len(mostPos[2])):
         print(mostPos[2][tIdx])
+    print('\nThe most positive tweet: \n')
+    print(userTweets[mostPos[3]])
     print('-------------------------------------------------------------\n')
 
-    #Most Negative Day
+    #Most Negative Day/ tweet
     print('-------------------------------------------------------------')
     print('Showing all tweets on most negative day, ', str(mostNeg[1]), ': \n')
     for tIdx in range(len(mostNeg[2])):
         print(mostNeg[2][tIdx])
+    print('\nThe most negative tweet: \n')
+    print(userTweets[mostNeg[3]])
     print('-------------------------------------------------------------')
 
 exit('Thank you for using Chronological Tweet analyzer')
