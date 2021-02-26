@@ -57,7 +57,11 @@ def main(user_id, tweetCount):
     for tweetIdx in range(len(json_response['data'])):
         tweetList.append(json_response['data'][tweetIdx]['text'])
         tweetDates.append(json_response['data'][tweetIdx]['created_at'])
-    params = {**params, 'pagination_token':json_response['meta']['next_token']}
+    #Get next pagination token, if possible
+    try:
+        params = {**params, 'pagination_token':json_response['meta']['next_token']}
+    except:
+        params = {**params, 'pagination_token':None}
     pagination_count = 1 #controls incremental amounts of tweets by max_count of pagination
     print('Pagination progress: ', pagination_count, '/', int(tweetCount / 100))
     while params['pagination_token'] and pagination_count < tweetCount/100:

@@ -48,3 +48,5 @@ while userText != 'end':
     plt.text(1,2, 'Your tweet classifies as: ' + tweetObj[0][1], ha='center',va='center', fontsize=15)
     plt.show()
     userText = input('Type your tweet (up to 280 characters) to check positivity or \'end\' if you\'re done: ')
+
+exit('Thank you for using Tweet Checker!')
