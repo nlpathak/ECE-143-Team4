@@ -36,6 +36,7 @@ while input("new search? (y/n): ") == 'y':
 
     print('Retrieving up to ', tweetCount, ' of the most recent tweets of user: ', userDat['data'][0]['name'], '...')
     userTweets, tweetDates = user_tweets.main(userDat['data'][0]['id'], tweetCount)
+    assert len(userTweets[0])>1, 'No data pulled. :('
     tweetObj = MF.predict(userTweets, vectorizer, model, silence=True)
     tweetDict = {'tweets':userTweets, 'tweetDates':tweetDates, 'prediction': [predict for x, predict, y in tweetObj], 'confidence': [conf for x, y, conf in tweetObj]}
     start = date(int(tweetDict['tweetDates'][-1][0:4]), int(tweetDict['tweetDates'][-1][5:7]), int(tweetDict['tweetDates'][-1][8:10]))
@@ -44,6 +45,7 @@ while input("new search? (y/n): ") == 'y':
     #Processing Data
     #daywiseTweets stores the quantity of tweets in a day aswell as the net quantity of positive/negative tweets
     daywiseTweets = np.zeros((2,(end - start).days))
+
     #mostPos/Neg stores the index of the day aswell as the day object and tweets that occured in that day and most pos/neg tweet overall
     mostPos = [[0],[], [], [0], [0]]
     mostNeg = [[0],[], [], [0], [0]]
