@@ -1,0 +1,24 @@
+{% extends "home.html" %}
+{% block title %}Tweets{% endblock %}
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'user/user.css' %}">
+{% endblock %}
+
+{% block body %}
+{% if tweets|length > 0 %}
+
+<div class="flex">
+{% for tweet in tweets %}
+    <div class = "mini-card">
+        <p>
+        {{tweet.user.username}}:<br>
+        {{tweet.created_at}}:
+        {{tweet.text}}
+        </p>
+    </div>
+{% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}

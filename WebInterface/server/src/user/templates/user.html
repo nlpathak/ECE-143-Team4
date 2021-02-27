@@ -3,11 +3,10 @@
 {% block title %}User{% endblock %}
 {% block head %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/user.css' %}">
-    <link rel="stylesheet" href="{% static 'css/users.scss' %}">
+    <link rel="stylesheet" href="{% static 'user/user.css' %}">
 {% endblock %}
 
-{% block body %}
+{% block header %}
 <div class="parent">
     <div class="div1"> </div>
 <div class="user_info"> 
@@ -27,18 +26,14 @@
 {% if tweets|length > 0 %}
 
 <div class="flex">
-<table class="rwd-table">
-    <tr>
-        <th>Created</th>
-        <th>Text</th>
-    </tr>
 {% for tweet in tweets %}
-    <tr>
-        <td data-th="Created">{{tweet.created_at}}</td>
-        <td data-th="Text">{{tweet.text}}</td>
-    </tr>
+    <div class = "mini-card">
+        <p>
+        {{tweet.created_at}}:
+        {{tweet.text}}
+        </p>
+    </div>
 {% endfor %}
-</table>
 </div>
 
 {% endif %}

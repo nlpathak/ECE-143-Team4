@@ -36,14 +36,14 @@ def user(request, user):
     except Exception as e:
         return HttpResponse(f"Exception thrown: {e}")
 
-    try: 
-        tweets = UserTweet.objects.filter(user=new_user)
-    except:
-        for tweet in tweety.get_tweets(new_user.id,10):    
-            tweet.update({'user':new_user})
-            tw_obj = UserTweet(**tweet)
-            tw_obj.save()
+    # Get tweets if already queried, returns empty list if no match
+    # if not tweets:
+    for tweet in tweety.get_tweets(new_user.id,100):    
+        tweet.update({'user':new_user})
+        tw_obj = UserTweet(**tweet)
+        tw_obj.save()
 
+    tweets = UserTweet.objects.filter(user=new_user)
 
     return render(request, 'user.html', context={'user':new_user, 'tweets':tweets})
     

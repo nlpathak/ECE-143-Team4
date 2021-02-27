@@ -77,7 +77,7 @@ class TwitGet():
         try:
             self.tweet_params = {**self.tweet_params, 'pagination_token':json_response['meta']['next_token']}
         except:
-            sefl.tweet_params = {**self.tweet_params, 'pagination_token':None}
+            self.tweet_params = {**self.tweet_params, 'pagination_token':None}
         pagination_count = 1 #controls incremental amounts of tweets by max_count of pagination
         self.logger.debug('Pagination progress: ', pagination_count, '/', int(tweetCount / 100))
 

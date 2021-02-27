@@ -18,7 +18,7 @@ class UserTweet(models.Model):
         Tweets from a specific user
     """
 
-    text = models.CharField(max_length=280)
+    text = models.CharField(max_length=500)
     user = models.ForeignKey('TwitterUser', on_delete=models.RESTRICT)
     id = models.CharField(primary_key=True,max_length=50)
     created_at = models.DateTimeField(default=datetime.datetime(1980, 1, 1, 0, 1, 1))

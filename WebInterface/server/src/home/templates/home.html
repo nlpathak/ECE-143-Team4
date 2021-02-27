@@ -6,7 +6,7 @@
     {% block head %}{% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'home/main.css' %}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -34,21 +34,26 @@
                         Dropdown
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">WordVec</a>
+                        <a class="dropdown-item" href="#">Tweet Test</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link" href="/about" tabindex="-1" aria-disabled="true">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/tweets">Tweets</a>
                 </li>
             </ul>
+            {% if form %}
             <form class="form-inline my-2 my-lg-0" action="/" method="POST">
                 {% csrf_token %}
                 {{form}}
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Analyze</button>
             </form>
+            {% endif %}
         </div>
 
     </nav>
@@ -59,9 +64,9 @@
 <body>
     <div class="header">
         <!--Content before waves-->
+{% block header %}
         <div class="inner-header flex">
             <!--Just the logo.. Don't mind this-->
-{% block header %}
 
             <svg version="1.1" class="logo" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500" xml:space="preserve">
