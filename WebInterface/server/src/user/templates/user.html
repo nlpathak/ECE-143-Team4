@@ -3,20 +3,44 @@
 {% block title %}User{% endblock %}
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/user.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+    <link rel="stylesheet" href="{% static 'css/users.scss' %}">
 {% endblock %}
 
-{% block header %}
+{% block body %}
 <div class="parent">
-<div class="div1"> </div>
-<div class="user_info"> <h1>{{user.username}}</h1></div>
-<div class="div3"> </div>
-<div class="div4"> </div>
-<div class="div5"> </div>
-<div class="div6"> </div>
-<div class="div7"> </div>
+    <div class="div1"> </div>
+<div class="user_info"> 
+    <div class = "card">
+    <h1>{{user.username}}</h1>
+    <p>Created at: {{user.created_at}}</p>
+    </div>
 </div>
+<div class="div3"> DIV3 </div>
+<div class="div4"> DIV4</div>
+<div class="div5"> DIV5</div>
+<div class="div6"> DIV6 </div>
+<div class="div7"> DIV7 </div>
+</div>
+
+
+{% if tweets|length > 0 %}
+
+<div class="flex">
+<table class="rwd-table">
+    <tr>
+        <th>Created</th>
+        <th>Text</th>
+    </tr>
+{% for tweet in tweets %}
+    <tr>
+        <td data-th="Created">{{tweet.created_at}}</td>
+        <td data-th="Text">{{tweet.text}}</td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+
+{% endif %}
 {% endblock %}
-
-
 {% endif %}

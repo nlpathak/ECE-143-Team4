@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import TwitterUser
+from .models import TwitterUser, UserTweet
 from .twitget import TwitGet
 from django.http import HttpResponse
 
@@ -23,18 +23,29 @@ def user(request, user):
     tweety = TwitGet() # Will not work without bearer token
     json_response = {}
     try:
-        json_response = tweety.connect_to_endpoint(user)
-        user_data = json_response['data'][0]
-        new_user = TwitterUser.objects.get(pk=user_data['id'])
+        # Attempt to get existing username
+        print(user)
+        new_user = TwitterUser.objects.get(username=user)
 
     except TwitterUser.DoesNotExist:
+        json_response = tweety.get_user(user)
+        user_data = json_response['data'][0]
         new_user = TwitterUser(**user_data)
         new_user.save()
 
     except Exception as e:
         return HttpResponse(f"Exception thrown: {e}")
-        
-    return render(request, 'user.html', context={'user':new_user})
+
+    try: 
+        tweets = UserTweet.objects.filter(user=new_user)
+    except:
+        for tweet in tweety.get_tweets(new_user.id,10):    
+            tweet.update({'user':new_user})
+            tw_obj = UserTweet(**tweet)
+            tw_obj.save()
+
+
+    return render(request, 'user.html', context={'user':new_user, 'tweets':tweets})
     
     return HttpResponse(f"Request: {json_response['data']}. You're at the user index.")
 
