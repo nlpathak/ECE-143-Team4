@@ -9,9 +9,11 @@ import numpy as np
 import matplotlib.cm as cm
 
 #Load trained models
+'''
 TfIdf_Model = pickle.load(open('tfidf_model.pickle', 'rb'))
 TfIdf_Vectorizer = pickle.load(open('tfidf_vect.pickle', 'rb'))
-w2v = gensim.models.Word2Vec.load('word2vec.model')
+'''
+#w2v = gensim.models.Word2Vec.load('word2vec.model')
 CountVect_Model = pickle.load(open('count_vect_model.pickle', 'rb'))
 CountVect_Vect = pickle.load(open('count_vectorizer.pickle', 'rb'))
 
@@ -25,14 +27,10 @@ while input("new search? (y/n): ") == 'y':
         userDat = get_users_with_bearer_token.main(username)
     tweetCount = int(input("Input quantity of most recent tweets to analyze (100-3,200 in 100 intervals): "))
     assert isinstance(tweetCount, int) and 100 <= tweetCount <= 3200
-    if input('Select the model to use: Tf-Idf (1) or Count Vectorizer (2): ') == '1':
-        model = TfIdf_Model
-        vectorizer = TfIdf_Vectorizer
-        modelLabel = 'Tf-Idf'
-    else:
-        model = CountVect_Model
-        vectorizer = CountVect_Vect
-        modelLabel = 'Count Vectorizer'
+
+    model = CountVect_Model
+    vectorizer = CountVect_Vect
+    modelLabel = 'Count Vectorizer'
 
     print('Retrieving up to ', tweetCount, ' of the most recent tweets of user: ', userDat['data'][0]['name'], '...')
     userTweets, tweetDates = user_tweets.main(userDat['data'][0]['id'], tweetCount)

@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def getExtremeWords(vectorizer, model):
     feature_names = np.array(vectorizer.get_feature_names())
     order = np.argsort(model.coef_)
@@ -15,6 +14,7 @@ def getExtremeWords(vectorizer, model):
 
 
 def predict(tweets, vectorizer, model, silence=False):
+    #tweets of type list
     tweet_vectors = vectorizer.transform(tweets)
     preds = model.predict_proba(tweet_vectors)
     returnList = []

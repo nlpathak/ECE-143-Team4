@@ -9,9 +9,11 @@ import numpy as np
 import matplotlib.cm as cm
 
 #Load trained models
+'''
 TfIdf_Model = pickle.load(open('tfidf_model.pickle', 'rb'))
 TfIdf_Vectorizer = pickle.load(open('tfidf_vect.pickle', 'rb'))
-w2v = gensim.models.Word2Vec.load('word2vec.model')
+'''
+#w2v = gensim.models.Word2Vec.load('word2vec.model')
 CountVect_Model = pickle.load(open('count_vect_model.pickle', 'rb'))
 CountVect_Vect = pickle.load(open('count_vectorizer.pickle', 'rb'))
 
@@ -22,9 +24,11 @@ userText = input('Type your tweet (up to 280 characters) to check positivity or 
 while userText != 'end':
     assert len(userText)<280
     if input('Select the model to use: Tf-Idf (1) or Count Vectorizer (2): ') == '1':
+        '''
         model = TfIdf_Model
         vectorizer = TfIdf_Vectorizer
         modelLabel = 'Tf-Idf'
+        '''
     else:
         model = CountVect_Model
         vectorizer = CountVect_Vect
