@@ -3,10 +3,11 @@ import user_tweets
 import pickle
 import gensim
 import ModelFunctions as MF
-from datetime import date
+from datetime import date, timedelta
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.cm as cm
+import matplotlib.dates as mdates
 
 #Load trained models
 TfIdf_Model = pickle.load(open('tfidf_model.pickle', 'rb'))
@@ -44,7 +45,7 @@ while input("new search? (y/n): ") == 'y':
 
     #Processing Data
     #daywiseTweets stores the quantity of tweets in a day aswell as the net quantity of positive/negative tweets
-    daywiseTweets = np.zeros((2,(end - start).days))
+    daywiseTweets = np.zeros((2,(end - start).days + 1))
 
     #mostPos/Neg stores the index of the day aswell as the day object and tweets that occured in that day and most pos/neg tweet overall
     mostPos = [[0],[], [], [0], [0]]
@@ -52,7 +53,7 @@ while input("new search? (y/n): ") == 'y':
     for tweetIdx in range(len(tweetDict['tweetDates'])):
         tweetDate = date(int(tweetDict['tweetDates'][tweetIdx][0:4]), int(tweetDict['tweetDates'][tweetIdx][5:7]),
                    int(tweetDict['tweetDates'][tweetIdx][8:10]))
-        daywiseTweets[0][(tweetDate-start).days-1] += 1
+        daywiseTweets[0][(tweetDate-start).days-1] += int(1)
         daywiseTweets[1][(tweetDate-start).days-1] += 1 if tweetDict['prediction'][tweetIdx] == 'Positive' else -1
         if daywiseTweets[1][(tweetDate-start).days-1] > mostPos[0]:
             mostPos[0] = daywiseTweets[1][(tweetDate-start).days-1]
@@ -75,10 +76,21 @@ while input("new search? (y/n): ") == 'y':
     #plotting data
     cmap = cm.get_cmap('RdYlGn')
     with plt.style.context('dark_background'):
-        plt.bar(range(len(daywiseTweets[0])), daywiseTweets[0], color=cmap(daywiseTweets[1]))
-        plt.title('Chronological ordering and positivity indication of ' + userDat['data'][0]['name'] + '\'s tweets', fontsize=40)
-        plt.xlabel('days from ' + str(start) + ', Model used: ' + modelLabel + ', Span: ' + str(start) + ' - ' + str(end), fontsize=30)
-        plt.ylabel('tweet quantity by day, Avg Tweets/Day: ' + '{:.2f}'.format(np.average(daywiseTweets[0])), fontsize=25)
+        days = mdates.drange(start, end + timedelta(days=1), timedelta(days=1))
+        plt.bar(days, daywiseTweets[0], color=cmap(daywiseTweets[1]))
+        plt.title(userDat['data'][0]['name'] + ', tweets/day: ' + '{:.2f}'.format(np.average(daywiseTweets[0])), fontsize=40)
+        # plt.xlabel('days from ' + str(start) + ', Model used: ' + modelLabel + ', Span: ' + str(start) + ' - ' + str(end), fontsize=30)
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%y-%b-%d'))
+        plt.rcParams.update({'xtick': 25})
+        if len(days) <10:
+            intervalDaysAxis = 2
+        elif 50 > len(days)>= 10:
+            intervalDaysAxis = int(len(days)/5)
+        else:
+            intervalDaysAxis = int(len(days)/15)
+        plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=intervalDaysAxis))
+        plt.gcf().autofmt_xdate()
+        plt.ylabel('tweet count', fontsize=25)
     plt.show()
 
     for tIdx, tDate in enumerate(tweetDates):
