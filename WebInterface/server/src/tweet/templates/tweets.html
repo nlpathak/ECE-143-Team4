@@ -2,20 +2,28 @@
 {% block title %}Tweets{% endblock %}
 {% block head %}
 {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'user/user.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'tweet/tweets.css' %}">
 {% endblock %}
-
+{% block logo %}{% endblock %}
+{% block header_txt %}
+<a href="https://imgflip.com/i/4zs9j0"><img src="https://i.imgflip.com/4zs9j0.jpg" title="made at imgflip.com"/></a><div><a href="https://imgflip.com/memegenerator"></a></div>
+{% endblock %}
 {% block body %}
 {% if tweets|length > 0 %}
 
-<div class="flex">
+<div class="tweet-flex">
 {% for tweet in tweets %}
-    <div class = "mini-card">
-        <p>
-        {{tweet.user.username}}:<br>
-        {{tweet.created_at}}:
+     <div class = "mini-card-tweet" {% if tweet.sentiment == "Positive" %} style="background:#A5D6A7"
+                             {% elif tweet.sentiment == "Negative" %} style="background:#EF9A9A" {% endif %}>
+        <img src="{{tweet.user.profile_img}}" width="46px" height="46px">
+        <h3><a href="{{tweet.user.profile_url}}">@{{tweet.user.username}}:</a></h3>
+        <h6>
+        Confidence: {{tweet.confidence|stringformat:".2f"}}, Created at {{tweet.created_at}}:  
+        </h6>
+
+        <h5>
         {{tweet.text}}
-        </p>
+        </h5>
     </div>
 {% endfor %}
 </div>

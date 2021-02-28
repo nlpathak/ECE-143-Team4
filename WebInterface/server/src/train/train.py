@@ -1,41 +1,64 @@
-def getExtremeWords(vectorizer, model):
-    feature_names = np.array(read_vect.get_feature_names())
-    order = np.argsort(read_model.coef_)
+import numpy as np
+import pickle
+from django.conf import settings 
+import gensim
 
-    print("Top 50 Most Negative Words/Phrases in Order:")
-    print(feature_names[order[0, :50]])
-    print()
-    print("Top 50 Most Positive Words/Phrases in Order:")
-    print(feature_names[order[0, -50:]][::-1])
+class SentimentAnalyzer:
+    """
+    Uses the tfidf model to predict sentiment on user tweets.
+    """
+    def __init__(self):
+        self.pickle_root = settings.PICKLE_ROOT[0]
+        print(self.pickle_root)
+        with open(self.pickle_root + '/tfidf_vect.pickle', 'rb') as f:
+            self.read_vect = pickle.load(f)
+        with open(self.pickle_root + '/tfidf_model.pickle', 'rb') as f:
+            self.read_model = pickle.load(f)
 
-    return feature_names[order[0, :50]], feature_names[order[0, -50:]][::-1] # negative, positive    
+    def getExtremeWords(self):
+        '''
+        Returns top 50 negative and positive words.
+        '''
+        feature_names = np.array(self.read_vect.get_feature_names())
+        order = np.argsort(self.read_model.coef_)
 
-def predict(tweets, vectorizer, model):
-    tweet_vectors = vectorizer.transform(tweets)
-    preds = model.predict_proba(tweet_vectors)
-    returnList = []
-    for i, tweet in enumerate(tweets):
-        print(f'Tweet: {tweet}')
-        pred = "Negative" if np.argmax(preds[i]) == 0 else "Positive"
-        print(f'Prediction: {pred}')
-        print(f'Confidence of {pred} Prediction (0 to 1): {np.max(preds[i])}')
+        top_neg = feature_names[order[0, :50]]
+        top_pos = feature_names[order[0, -50:]][::-1]
+
+        extreme = {'top_neg':top_neg,'top_pos':top_pos}
+        return extreme
+
+    def predict(self, tweets):
+        tweet_vectors = self.read_vect.transform(tweets)
+        predictions = self.read_model.predict_proba(tweet_vectors)
+        sentiment = list(map(lambda x: "Negative" if np.argmax(x) == 0 else "Positive", predictions))
+        confidence = list(map(lambda x: np.max(x), predictions))
+        returnList = list(zip(tweets,sentiment,confidence))
+
+        return returnList
+
+    def analyzeTweets(self, tweets):
+        """
+        Analyzes tweets and returns a list of ...
+        :param tweets:
+        :param self.read_vect:
+        :param model:
+        :return : list of lists of tuples
+        """
+        assert isinstance(tweets, list)
+        assert all([isinstance(x,str) for x in tweets])
+        returnList = []
+        for tweet in tweets:
+            tweetList = []
+            for word in tweet.split():
+                word = word.lower()
+                if word in self.read_vect.get_feature_names():
+                    index = self.read_vect.get_feature_names().index(word)
+                    print(f'Word: {word}, Connotation: {self.read_model.coef_[0, index]:.3f}')
+                    tweetList.append((word, self.read_model.coef_[0, index]))
+                else: # not a top feature
+                    print(f'Word: {word}, Connotation: {0:.3f}')
+                    tweetList.append((word, 0))
+        returnList.append(tweetList)
         print()
-        returnList.append((tweet, pred, np.max(preds[i])))
-    return returnList
-
-def analyzeTweets(tweets, vectorizer, model):
-    returnList = []
-    for tweet in tweets:
-        tweetList = []
-        for word in tweet.split():
-            word = word.lower()
-            if word in vectorizer.get_feature_names():
-                index = vectorizer.get_feature_names().index(word)
-                print(f'Word: {word}, Connotation: {model.coef_[0, index]:.3f}')
-                tweetList.append((word, model.coef_[0, index]))
-            else: # not a top feature
-                print(f'Word: {word}, Connotation: {0:.3f}')
-                tweetList.append((word, 0))
-    returnList.append(tweetList)
-    print()
-    return returnList
+        return returnList

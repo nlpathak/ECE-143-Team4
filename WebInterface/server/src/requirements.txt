@@ -8,3 +8,4 @@ django_compressor==2.2
 django-libsass==0.7
 Pillow
 scipy
+gensim

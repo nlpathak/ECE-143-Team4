@@ -127,7 +127,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
-PICKLE_DIR = (
-    os.path.join(BASE_DIR, 'pickle'),
-)
+PICKLE_ROOT = os.path.join(BASE_DIR, 'pickle'),
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')

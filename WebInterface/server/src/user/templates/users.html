@@ -4,27 +4,45 @@
 
 {% block head %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/users.scss' %}">
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
 {% endblock %}
 
-{% block content %}
 
 {% if users|length > 0 %}
-<table class="rwd-table">
-    <tr>
-        <th>Username</th>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Created At</th>
-    </tr>
-    {% for user in users %}
-    <tr>
-        <td data-th="Username"><a href="{{user.get_absolute_url}}">{{user.username}}</a></td>
-        <td data-th="ID">{{user.id}}</td>
-        <td data-th="Name">{{user.name}}</td>
-        <td data-th="Created At">{{user.created_at}}</td>
-    </tr>
-    {% endfor %}
-</table>
+    {% block body %}
+    <div> 
+    <table class="container">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Created At</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        
+        <tr>
+            <td><h1><a href="{{user.get_absolute_url}}">{{user.username}}</a></h1></td>
+            <td><h1>{{user.id}}</h1></td>
+            <td><h1>{{user.name}}</h1></td>
+            <td><h1>{{user.created_at}}</h1></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endblock %}
 {% endif %}
-{% endblock %}
+
+{% block logo %}{% endblock %}
+    {% block header_txt %}
+    <div>
+    {% if not users %}
+        <img src="{% static 'user/spongebob.jpg' %}">
+    {% elif users %}
+    <h1> Users </h1>
+    {% endif %}
+    </div>
+    {% endblock %}
