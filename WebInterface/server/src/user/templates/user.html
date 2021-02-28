@@ -9,7 +9,7 @@
 {% endblock %}
 {% block header_txt %}
 <div class="card">
-    <br><br>
+    <br>
     <img src="{{user.profile_img}}" alt="Profile Image" width="240px" height="240px" class="clip-circle">
 
     <h1><a href="{{user.profile_url}}">{{user.username}}
@@ -17,7 +17,12 @@
     <img src="{% static 'user/verified.png' %}" alt="verified" width="30px" height="30px">
     {% endif %}
     </a></h1>
-    <p>Created at: {{user.created_at}}</p>
+    <p>
+    Created at: {{user.created_at}} <br>
+    Followers: {{user.followers_count}}<br>
+    Following: {{user.following_count}}, 
+    Tweets: {{user.tweet_count}}
+    </p>
 </div>
 {% endblock %}
 {% block body %}
