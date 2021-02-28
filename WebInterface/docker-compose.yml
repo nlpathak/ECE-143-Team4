@@ -18,6 +18,8 @@ services:
             context: ./server
         environment: 
             - BEARER_TOKEN=${BEARER_TOKEN}
+            - PLOTLY_USER=${PLOTLY_USER}
+            - PLOTPLY_API=${PLOTLY_API}
         command: python manage.py runserver 0.0.0.0:5454
         volumes:
             - ./server/src:/app

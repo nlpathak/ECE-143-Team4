@@ -3,6 +3,7 @@ from .models import TwitterUser, UserTweet
 from .twitget import TwitGet
 from django.http import HttpResponse
 from train.train import SentimentAnalyzer
+import logging
 
 import os
 import json
@@ -11,7 +12,7 @@ try:
     if 'BEARER_TOKEN' in os.environ:
         BEARER_T = os.environ['BEARER_TOKEN']
     else:
-        print('BEARER_TOKEN NOT FOUND')
+        logging.error('BEARER_TOKEN NOT FOUND')
 except EnvironmentError as e:
     print(e)
 
