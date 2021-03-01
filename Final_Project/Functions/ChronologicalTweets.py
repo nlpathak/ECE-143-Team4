@@ -81,7 +81,7 @@ while input("new search? (y/n): ") == 'y':
         plt.title(userDat['data'][0]['name'] + ', tweets/day: ' + '{:.2f}'.format(np.average(daywiseTweets[0])), fontsize=40)
         # plt.xlabel('days from ' + str(start) + ', Model used: ' + modelLabel + ', Span: ' + str(start) + ' - ' + str(end), fontsize=30)
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%y-%b-%d'))
-        plt.rcParams.update({'xtick': 25})
+
         if len(days) <10:
             intervalDaysAxis = 2
         elif 50 > len(days)>= 10:
