@@ -2,6 +2,9 @@ import numpy as np
 import pickle
 from django.conf import settings 
 import gensim
+from nltk.tokenize import TweetTokenizer
+import nltk
+
 
 class SentimentAnalyzer:
     """
@@ -54,11 +57,23 @@ class SentimentAnalyzer:
                 word = word.lower()
                 if word in self.read_vect.get_feature_names():
                     index = self.read_vect.get_feature_names().index(word)
-                    print(f'Word: {word}, Connotation: {self.read_model.coef_[0, index]:.3f}')
                     tweetList.append((word, self.read_model.coef_[0, index]))
                 else: # not a top feature
-                    print(f'Word: {word}, Connotation: {0:.3f}')
                     tweetList.append((word, 0))
         returnList.append(tweetList)
-        print()
+        return returnList
+
+    def getMostSimilarWords(tweets, w2v_model):
+        """
+        """
+        nltk.download('punkt')
+        returnList = []
+        for tweet in tweets:
+            tweetList = []
+            for word in tweetTokenizer.tokenize(tweet.lower()):
+                if word in w2v_model.wv.vocab:
+                    tweetList.append((word, w2v_model.wv.most_similar(word)))
+                else:
+                    tweetList.append((word, []))
+            returnList.append(tweetList)
         return returnList

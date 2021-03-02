@@ -7,8 +7,7 @@ class WordCheckForm(forms.Form):
     """
         Defines a form for entering text and getting a sentiment response. 
     """
-    # widget=forms.TextInput(attrs = {'class':'form-control mr-sm-2', 'placeholder':'Insert a tweet.', 'aria-label':'Search'})
-    txt = forms.CharField(label="",help_text='',min_length=1, max_length=280)
+    txt = forms.CharField(label="",min_length=1, max_length=280,widget=forms.TextInput(attrs = {'placeholder':'Insert a tweet.'}))
     def clean_txt(self):
         """
             Gets 'cleaned' data and returns.
@@ -17,4 +16,4 @@ class WordCheckForm(forms.Form):
         txt = self.cleaned_data['txt']
         # if not valid:
         #   raise ValidationError(_('Not a valid Twitter user.'))
-        return user
+        return txt

@@ -2,20 +2,30 @@
 {% block title %}Tweets{% endblock %}
 {% block head %}
 {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'tweet/tweets.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'user/user.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'wordcheck/wordcheck.css' %}">
 {% endblock %}
 
 {% block logo %}{% endblock %}
 {% block header_txt %}
-{% if form %}
-<form action="/" method="POST">
+{% if wordform %}
+<form class="wordcheck_form" action="/wordcheck/" method="POST">
     {% csrf_token %}
-    {{form}}
+    {{wordform}}<br><br>
     <input type="submit" type="submit"></button>
 </form>
 {% endif %}
-
 {% endblock %}
-
 {% block body %}
+{% if predicted|length > 0 %}
+<div class="flex">
+{% for pred in predicted %}
+<div class="item mini-card" {% if pred.sentiment == "Positive" %} style="background:#A5D6A7"
+                             {% elif pred.sentiment == "Negative" %} style="background:#EF9A9A" {% endif %}>
+    <h2>{{pred.word}}</h2>
+    <h4>{{pred.confidence|stringformat:".2f"}}</h4>
+</div>
+{% endfor %}
+</div>
+{% endif %}
 {% endblock %}
