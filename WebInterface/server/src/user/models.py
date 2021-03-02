@@ -9,6 +9,7 @@ class TwitterUser(models.Model):
     description = models.CharField(max_length=200, default="")
     profile_img = models.ImageField(null=True,blank=True)
     profile_url = models.CharField(max_length=200, default="")
+    bar_url = models.CharField(max_length=1000, default="",null=True,blank=True)
     verified = models.BooleanField(default=False)
     followers_count = models.CharField(max_length=200, default="")
     following_count = models.CharField(max_length=200, default="")

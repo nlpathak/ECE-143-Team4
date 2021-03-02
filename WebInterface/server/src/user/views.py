@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from .models import TwitterUser, UserTweet
 from .twitget import TwitGet
+from .utils import plotly_url
+
 from django.http import HttpResponse
 from train.train import SentimentAnalyzer
 import logging
 
 import os
 import json
+
+NUM_TWEETS = 100
 
 try:
     if 'BEARER_TOKEN' in os.environ:
@@ -51,7 +55,7 @@ def user(request, user):
     # if not tweets:
     try:
         analyzer = SentimentAnalyzer()
-        tweets = tweety.get_tweets(new_user.id,10) # list of dicts containing tweets    
+        tweets = tweety.get_tweets(new_user.id,NUM_TWEETS) # list of dicts containing tweets    
         if tweets:
             tweets_txt = [x['text'] for x in tweets] # get list of tweets
             predict = analyzer.predict(tweets_txt) # returns list of tuples i.e. (text,sentiment,confidence)
@@ -65,9 +69,12 @@ def user(request, user):
 
     tweets = UserTweet.objects.filter(user=new_user)
 
-    return render(request, 'user.html', context={'user':new_user, 'tweets':tweets})
+    # Gets the url of the plotly chart, default freq is H: hours
+    bar_plotly = plotly_url(list(tweets.values('created_at', 'user_id','sentiment')[:50]),user, freq='H')
     
-    return HttpResponse(f"Request: {json_response['data']}. You're at the user index.")
+
+    return render(request, 'user.html', context={'user':new_user, 'tweets':tweets, 'bar_plotly':bar_plotly})
+    
 
 def users(request):
     all_users = TwitterUser.objects.all()

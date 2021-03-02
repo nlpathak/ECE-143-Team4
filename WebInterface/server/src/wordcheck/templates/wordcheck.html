@@ -1,0 +1,21 @@
+{% extends "home.html" %}
+{% block title %}Tweets{% endblock %}
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'tweet/tweets.css' %}">
+{% endblock %}
+
+{% block logo %}{% endblock %}
+{% block header_txt %}
+{% if form %}
+<form action="/" method="POST">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" type="submit"></button>
+</form>
+{% endif %}
+
+{% endblock %}
+
+{% block body %}
+{% endblock %}

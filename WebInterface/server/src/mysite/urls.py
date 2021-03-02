@@ -26,5 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', views.users, name="users"),
     path('about/', include('about.urls')),
-    path('tweets/', include('tweet.urls'))
+    path('tweets/', include('tweet.urls')),
+    path('wordcheck/', include('wordcheck.urls')),
 ] + static(settings.STATIC_URL, documen_root=settings.STATIC_ROOT)

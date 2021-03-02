@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'user.apps.UserConfig',
     'tweet.apps.TweetConfig',
-    'about.apps.AboutConfig'
+    'about.apps.AboutConfig',
+    'wordcheck.apps.WordcheckConfig',
 ]
 
 MIDDLEWARE = [

@@ -11,3 +11,6 @@ scipy
 gensim
 nltk
 plotly
+chart_studio
+seaborn
+matplotlib

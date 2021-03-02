@@ -8,6 +8,7 @@
 {% block logo %}
 {% endblock %}
 {% block header_txt %}
+
 <div class="card">
     <br>
     <img src="{{user.profile_img}}" alt="Profile Image" width="240px" height="240px" class="clip-circle">
@@ -24,18 +25,15 @@
     Tweets: {{user.tweet_count}}
     </p>
 </div>
+
 {% endblock %}
+
 {% block body %}
-<div class="parent inner-header">
-    <div class="div1"> </div>
-<div class="user_info"> 
-    user_info
-</div>
-<div class="div3"> {{plotly_overtime}} </div>
-<div class="div4"> DIV4</div>
-<div class="div5"> DIV5</div>
-<div class="div6"> DIV6 </div>
-<div class="div7"> DIV7 </div>
+
+<div class="inner-header user_container">
+    <div class="item"> </div>
+    <div class="item"> user_info </div>
+    <div class="item"> {{ bar_plotly|safe }} </div>
 </div>
 
 {% if tweets|length > 0 %}
