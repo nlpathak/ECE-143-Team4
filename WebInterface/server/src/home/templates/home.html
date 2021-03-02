@@ -43,9 +43,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/about" tabindex="-1" aria-disabled="true">About</a>
                 </li>
+                {% block tweets-nav %}
                 <li class="nav-item">
                     <a class="nav-link" href="/tweets">Tweets</a>
                 </li>
+                {% endblock %}
+                {% block navbar-extra %}{% endblock %}
             </ul>
             {% if form %}
             <form class="form-inline my-2 my-lg-0" action="/" method="POST">

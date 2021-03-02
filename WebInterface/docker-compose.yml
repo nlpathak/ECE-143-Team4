@@ -28,3 +28,4 @@ services:
         container_name: web-serv
         depends_on:
             - db
+
