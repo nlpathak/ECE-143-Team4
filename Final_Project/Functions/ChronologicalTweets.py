@@ -78,16 +78,21 @@ while input("new search? (y/n): ") == 'y':
     with plt.style.context('dark_background'):
         days = mdates.drange(start, end + timedelta(days=1), timedelta(days=1))
         plt.bar(days, daywiseTweets[0], color=cmap(daywiseTweets[1]))
-        plt.title(userDat['data'][0]['name'] + ', tweets/day: ' + '{:.2f}'.format(np.average(daywiseTweets[0])), fontsize=40)
-        # plt.xlabel('days from ' + str(start) + ', Model used: ' + modelLabel + ', Span: ' + str(start) + ' - ' + str(end), fontsize=30)
-        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%y-%b-%d'))
-
         if len(days) <10:
             intervalDaysAxis = 2
+            maf_width = int(len(daywiseTweets[0]) / 2)
         elif 50 > len(days)>= 10:
             intervalDaysAxis = int(len(days)/5)
+            maf_width = int(len(daywiseTweets[0]) / 5)
         else:
             intervalDaysAxis = int(len(days)/15)
+            maf_width = int(len(daywiseTweets[0]) / 15)
+        smoothed = np.convolve(daywiseTweets[0], np.ones(maf_width)/maf_width)
+        smoothed = smoothed[0:len(daywiseTweets[0]-1)]
+        plt.plot(days, smoothed, '--', color='cyan', linewidth=5.5)
+        plt.title(userDat['data'][0]['name'] + ', tweets/day: ' + '{:.2f}'.format(np.average(daywiseTweets[0])), fontsize=40)
+        # plt.xlabel('days from ' + str(start) + ', Model used: ' + modelLabel + ', Span: ' + str(start) + ' - ' + str(end), fontsize=30)
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%b-%d'))
         plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=intervalDaysAxis))
         plt.gcf().autofmt_xdate()
         plt.ylabel('tweet count', fontsize=25)
