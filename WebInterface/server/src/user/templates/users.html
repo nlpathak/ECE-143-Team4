@@ -4,34 +4,32 @@
 
 {% block head %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+    <link rel="stylesheet" href="{% static 'user/user.css' %}">
 {% endblock %}
 
 
 {% if users|length > 0 %}
     {% block body %}
-    <div> 
-    <table class="container">
-        <thead>
-        <tr>
-            <th>Username</th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Created At</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="allusers"> 
         {% for user in users %}
-        
-        <tr>
-            <td><h1><a href="{{user.get_absolute_url}}">{{user.username}}</a></h1></td>
-            <td><h1>{{user.id}}</h1></td>
-            <td><h1>{{user.name}}</h1></td>
-            <td><h1>{{user.created_at}}</h1></td>
-        </tr>
+        <div class="card">
+            <br>
+            <img src="{{user.profile_img}}" alt="Profile Image" width="240px" height="240px" class="clip-circle">
+
+            <h1><a href="{{user.profile_url}}">{{user.username}}
+            {% if user.verified %}
+            <img src="{% static 'user/verified.png' %}" alt="verified" width="30px" height="30px">
+            {% endif %}
+            </a></h1>
+            <p>
+            Created at: {{user.created_at}} <br>
+            Followers: {{user.followers_count}}<br>
+            Following: {{user.following_count}}, 
+            Tweets: {{user.tweet_count}}
+            </p>
+        </div>
+
         {% endfor %}
-        </tbody>
-    </table>
     </div>
     {% endblock %}
 {% endif %}
