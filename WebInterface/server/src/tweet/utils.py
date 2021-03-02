@@ -6,13 +6,13 @@ def download_csv(request, queryset):
 
   model = queryset.model
   model_fields = model._meta.fields + model._meta.many_to_many
-  field_names = [field.name for field in model_fields if field.name != 'user']
+  field_names = [field.name for field in model_fields if field.name]
 
   response = HttpResponse(content_type='text/csv')
   response['Content-Disposition'] = 'attachment; filename="export.csv"'
 
   # the csv writer
-  writer = csv.writer(response, delimiter=";")
+  writer = csv.writer(response, delimiter=",")
   # Write a first row with header information
   writer.writerow(field_names)
   # Write data rows
