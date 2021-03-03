@@ -133,6 +133,6 @@ dmypy.json
 
 *.csv
 *.pickle
+*.model
 *.npy
 *.npz
-*.model
