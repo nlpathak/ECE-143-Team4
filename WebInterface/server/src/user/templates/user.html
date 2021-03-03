@@ -1,4 +1,5 @@
 {% extends "home.html" %}
+{% load user_extras %}
 {% if user|length > 0 %}
 {% block title %}User{% endblock %}
 {% block head %}
@@ -39,11 +40,13 @@
 {% for tweet in tweets %}
     <div class = "mini-card" {% if tweet.sentiment == "Positive" %} style="background:#A5D6A7"
                              {% elif tweet.sentiment == "Negative" %} style="background:#EF9A9A" {% endif %}>
-        <p>
-        Confidence: {{tweet.confidence|stringformat:".2f"}} <br>
+        <h6>
+        Confidence: {{tweet.confidence|perc}} <br>
         {{tweet.created_at}}:
+        </h6>
+        <h4>
         {{tweet.text}}
-        </p>
+        </h4>
     </div>
 {% endfor %}
 </div>

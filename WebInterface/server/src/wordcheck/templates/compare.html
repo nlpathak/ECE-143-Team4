@@ -10,7 +10,7 @@
 {% block logo %}{% endblock %}
 {% block header_txt %}
 {% if wordform %}
-<form class="wordcheck_form" action="/wordcheck/" method="POST">
+<form class="wordcheck_form" action="/wordcheck/compare" method="POST">
     {% csrf_token %}
     {{wordform}}<br><br>
     <input type="submit" type="submit"></button>

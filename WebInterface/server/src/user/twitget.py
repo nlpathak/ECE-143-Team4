@@ -71,26 +71,27 @@ class TwitGet():
         tweets = []
         if json_response and 'data' in json_response:
 
-            tweets = json_response['data']
+            tweets.extend(json_response['data'])
 
             #Get next pagination token, if possible
             try:
-                self.tweet_params.update({'pagination_token':json_response['meta']['next_token'][0]})
+                self.tweet_params.update({'pagination_token':json_response['meta']['next_token']})
             except:
                 self.tweet_params.update({'pagination_token':None})
-            pagination_count = 1 #controls incremental amounts of tweets by max_count of pagination
+            pagination_count = 0 #controls incremental amounts of tweets by max_count of pagination
 
             while self.tweet_params['pagination_token'] and pagination_count < tweetCount/100:
                 pagination_count += 1
-                json_response = self.connect_to_endpoint(url, self.tweet_params)
+                json_response = self.connect_to_endpoint(user_id, params=self.tweet_params)
+                # Append new response data
+                tweets.extend(json_response['data'])
                 try:
-                    self.tweet_params['pagination_token'] = json_response['meta']['next_token'][0]
-                except:
-                    self.tweet_params['pagination_token'] = None
-                tweets.append(json_response['data'])
+                    self.tweet_params.update({'pagination_token':json_response['meta']['next_token']})
+                except Exception as e:
+                    self.tweet_params.update({'pagination_token':None})
 
             if pagination_count != int(tweetCount/100):
-                self.logger.debug('Reached end of content from user before specified request amount.')
+                self.logger.info('Reached end of content from user before specified request amount.')
             return tweets
         else:
             return []
