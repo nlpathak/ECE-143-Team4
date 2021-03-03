@@ -75,20 +75,18 @@ class TwitGet():
 
             #Get next pagination token, if possible
             try:
-                self.tweet_params = {**self.tweet_params, 'pagination_token':json_response['meta']['next_token']}
+                self.tweet_params.update({'pagination_token':json_response['meta']['next_token'][0]})
             except:
-                self.tweet_params = {**self.tweet_params, 'pagination_token':None}
+                self.tweet_params.update({'pagination_token':None})
             pagination_count = 1 #controls incremental amounts of tweets by max_count of pagination
-            self.logger.debug('Pagination progress: ', pagination_count, '/', int(tweetCount / 100))
 
             while self.tweet_params['pagination_token'] and pagination_count < tweetCount/100:
                 pagination_count += 1
                 json_response = self.connect_to_endpoint(url, self.tweet_params)
-                self.logger.debug('Pagination progress: ', pagination_count, '/', int(tweetCount/100))
                 try:
-                    self.tweet_params['pagination_token'] = json_response['meta']['next_token']
+                    self.tweet_params['pagination_token'] = json_response['meta']['next_token'][0]
                 except:
-                    self.tweet_params['pagination_token'] = False
+                    self.tweet_params['pagination_token'] = None
                 tweets.append(json_response['data'])
 
             if pagination_count != int(tweetCount/100):

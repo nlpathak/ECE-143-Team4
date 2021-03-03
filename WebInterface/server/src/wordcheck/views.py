@@ -15,14 +15,13 @@ def check_words(request):
             txt = form.clean_txt()
             # Remove punctuation
             txt = txt.translate(str.maketrans('','',string.punctuation))
-            unq = list(set(txt.split(' ')))
             analyzer = SentimentAnalyzer()
 
-            retList = analyzer.predict(unq)
-            txt_dict = [{'word':x[0],'sentiment':x[1],'confidence':x[2]} for x in retList]
+            retList = analyzer.predict([txt])[0]
+            txt_dict = {'txt':retList[0],'sentiment':retList[1],'confidence':retList[2]}
             # Renew form...
             form = WordCheckForm()
-            # return HttpResponse(f'Request{txt_dict}.')
+            # return HttpResponse(f'Request{retList}.')
 
             return render(request, 'wordcheck.html', context={'wordform':form,'predicted':txt_dict})
         else:

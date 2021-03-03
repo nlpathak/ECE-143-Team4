@@ -10,7 +10,7 @@ import logging
 import os
 import json
 
-NUM_TWEETS = 100
+NUM_TWEETS = 500
 
 try:
     if 'BEARER_TOKEN' in os.environ:
@@ -70,7 +70,7 @@ def user(request, user):
     tweets = UserTweet.objects.filter(user=new_user)
 
     # Gets the url of the plotly chart, default freq is H: hours
-    bar_plotly = plotly_url(list(tweets.values('created_at', 'user_id','sentiment')[:50]),user, freq='H')
+    bar_plotly = plotly_url(list(tweets.values('created_at', 'user_id','sentiment')),user, freq='H')
     
 
     return render(request, 'user.html', context={'user':new_user, 'tweets':tweets, 'bar_plotly':bar_plotly})

@@ -29,11 +29,9 @@
 {% endblock %}
 
 {% block body %}
+<div class="inner-header">
+{{bar_plotly|safe}}
 
-<div class="inner-header user_container">
-    <div class="item"> </div>
-    <div class="item"> user_info </div>
-    <div class="item"> {{ bar_plotly|safe }} </div>
 </div>
 
 {% if tweets|length > 0 %}

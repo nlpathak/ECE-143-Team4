@@ -22,7 +22,7 @@
 {% for pred in predicted %}
 <div class="item mini-card" {% if pred.sentiment == "Positive" %} style="background:#A5D6A7"
                              {% elif pred.sentiment == "Negative" %} style="background:#EF9A9A" {% endif %}>
-    <h2>{{pred.word}}</h2>
+    <h2>{{pred.txt}}</h2>
     <h4>{{pred.confidence|stringformat:".2f"}}</h4>
 </div>
 {% endfor %}

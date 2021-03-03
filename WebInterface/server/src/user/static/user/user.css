@@ -70,11 +70,11 @@ border: 2px solid red;
 display: flex;
 flex-wrap: wrap;
 flex-direction: row-reverse;
-justify-content: center;
+justify-content: stretch;
 align-items: stretch;
-align-content: space-around;
+align-content: stretch;
 }
-.user_container > iframe {
+iframe {
 flex: 0 0 auto;
 margin: 5px;
 }
