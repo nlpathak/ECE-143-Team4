@@ -26,17 +26,23 @@
     Tweets: {{user.tweet_count}}
     </p>
 </div>
-
+    
 {% endblock %}
 
 {% block body %}
 <div class="inner-header">
-{{bar_plotly|safe}}
+    <div class="item">
+    {{bar_plotly|safe}}
+    </div>
 
-</div>
+    </div>
 
 {% if tweets|length > 0 %}
 <div class="flex">
+    <div class = "card">
+    <img src="{% static 'user/media/'|add:wordcloud %}" width="400px" height="400px">
+    </div>
+
 {% for tweet in tweets %}
     <div class = "mini-card" {% if tweet.sentiment == "Positive" %} style="background:#A5D6A7"
                              {% elif tweet.sentiment == "Negative" %} style="background:#EF9A9A" {% endif %}>

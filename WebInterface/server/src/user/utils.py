@@ -3,11 +3,17 @@ import plotly.express as px
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 import chart_studio.tools as tls
+from django.conf import settings
 import os
+import string
+from wordcloud import WordCloud, STOPWORDS
+from nltk.tokenize import TweetTokenizer
 
 # Global Settings
 cdm = {"Positive": "Blue", "Negative": "Red"}
 co ={"sentiment": ["Positive", "Negative"]}
+tweetTokenizer = TweetTokenizer(strip_handles=True, preserve_case=False)
+stopwords = set(STOPWORDS)
 
 
 def plotly_url(data,user, freq='D'):
@@ -37,8 +43,8 @@ def plotly_url(data,user, freq='D'):
         df_u['nroll_7'] = df_u[df_u['sentiment']=='Negative'].total.rolling(7,win_type='triang').mean()
         df_u['proll_7'] = df_u[df_u['sentiment']=='Positive'].total.rolling(7,win_type='triang').mean()
 
-        df_u['nroll_7'] = df_u['nroll_7'].fillna(0)
-        df_u['proll_7'] = df_u['proll_7'].fillna(0)
+        df_u['nroll_7'] = df_u['nroll_7'].fillna(method='bfill').fillna(method='ffill')
+        df_u['proll_7'] = df_u['proll_7'].fillna(method='bfill').fillna(method='ffill')
 
         # Plotly
         tls.set_credentials_file(username=user_plotly,api_key=api)
@@ -53,3 +59,25 @@ def plotly_url(data,user, freq='D'):
         return tls.get_embed(url)
     except Exception as e:
         print(f'plotly_url error: {e}')
+
+def gen_word_cloud(data,user):
+    """
+    Generates a word cloud from tweets...
+    """
+
+    df = pd.DataFrame(data)
+    tweets = df['text'].str.cat(sep=' ')
+
+    # Remove punctuation
+    tweets = tweets.translate(str.maketrans('', '', string.punctuation))
+
+    tweets = tweetTokenizer.tokenize(tweets)
+    tweets = list(filter(lambda x: all([c.isalpha() for c in x]), tweets))
+    tweets = ' '.join(tweets)
+    wordcloud = WordCloud(width = 800, height = 800, 
+                    background_color ='white', 
+                    stopwords = stopwords, 
+                    min_font_size = 10).generate(tweets) 
+      
+    wordcloud.to_file(f'/app/user/static/user/media/{user}_cloud.png')
+    return f'{user}_cloud.png'

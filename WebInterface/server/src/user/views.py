@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import TwitterUser, UserTweet
 from .twitget import TwitGet
-from .utils import plotly_url
+from .utils import plotly_url, gen_word_cloud
 
 from django.http import HttpResponse
 from train.train import SentimentAnalyzer
@@ -73,9 +73,11 @@ def user(request, user):
 
     # Gets the url of the plotly chart, default freq is H: hours
     bar_plotly = plotly_url(list(tweets.values('created_at', 'user_id','sentiment')),user, freq='D')
-    
 
-    return render(request, 'user.html', context={'user':new_user, 'tweets':tweets, 'bar_plotly':bar_plotly})
+    
+    wc = gen_word_cloud(list(tweets.values('text')),user)
+
+    return render(request, 'user.html', context={'user':new_user, 'tweets':tweets, 'bar_plotly':bar_plotly, 'wordcloud':wc})
     
 
 def users(request):

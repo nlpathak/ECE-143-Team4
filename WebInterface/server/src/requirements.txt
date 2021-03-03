@@ -14,3 +14,4 @@ plotly
 chart_studio
 seaborn
 matplotlib
+wordcloud
