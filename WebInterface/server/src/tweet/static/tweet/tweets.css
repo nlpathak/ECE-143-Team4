@@ -1,0 +1,35 @@
+.mini-card-tweet {
+  background: #fff;
+  border-radius: 5px;
+  height: fit-content;
+  margin: 20px;
+  padding: 10px;
+  text-align: justify;
+  overflow-wrap: break-word;
+  width: fit-content;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  color: black;
+}
+
+.mini-card-tweet:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.mini-card-tweet > p {
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 1px;
+  font-size:14px;
+  color: black;
+}
+h6 {
+color: grey;
+}
+.tweet-flex { /*Flexbox for containers*/
+  display: flex;
+  justify-content: center;
+  align-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
+  margin:auto;
+}

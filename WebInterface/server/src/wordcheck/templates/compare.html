@@ -1,0 +1,79 @@
+{% extends "home.html" %}
+{% load word_extras %}
+{% block title %}Word Comparison{% endblock %}
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'wordcheck/compare.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'wordcheck/wordcheck.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/networkgraph.js"></script>
+{% endblock %}
+
+{% block logo %}{% endblock %}
+{% block header_txt %}
+{% if wordform %}
+<div>
+    <h1>Word Comparison</h1><br>
+<form class="wordcheck_form" action="/wordcheck/compare" method="POST">
+    {% csrf_token %}
+    {{wordform}}<br><br>
+    <input type="submit" type="submit"></button>
+</form>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+{% if data and nodes %}
+<div class="flex">
+<div id="network" class="item" style="width:100%;height:1000px;"></div>
+</div>
+<script>
+Highcharts.chart('network', {
+
+chart: {
+type: 'networkgraph',
+marginTop: 80
+},
+
+title: {
+text: 'Word Comparison'
+},
+
+subtitle: {
+    text: "{{txt|safe}}" 
+},
+
+plotOptions: {
+    networkgraph: {
+      keys: ['from', 'to'],
+      layoutAlgorithm: {
+        enableSimulation: false,
+        integration: 'verlet',
+        linkLength: 100
+      }
+    }
+},
+
+series: [{
+    marker: {
+      radius: 13,
+    },
+dataLabels: {
+  enabled: true,
+      textPath: {
+        enabled: true
+      },
+  linkFormat: '',
+  allowOverlap: true
+},
+    data: {{data|safe}},
+    nodes: {{nodes|safe}}
+}]
+});
+</script>
+
+{% endif %}
+{% endblock %}
+

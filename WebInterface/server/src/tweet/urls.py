@@ -3,5 +3,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index,name='index'),
+    path('', views.tweets,name='tweets'),
+    path('csv',views.export_csv,name='csv'),
 ]

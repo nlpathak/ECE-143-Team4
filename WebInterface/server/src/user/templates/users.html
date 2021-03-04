@@ -4,27 +4,43 @@
 
 {% block head %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/users.scss' %}">
+    <link rel="stylesheet" href="{% static 'user/user.css' %}">
 {% endblock %}
 
-{% block content %}
 
 {% if users|length > 0 %}
-<table class="rwd-table">
-    <tr>
-        <th>Username</th>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Created At</th>
-    </tr>
-    {% for user in users %}
-    <tr>
-        <td data-th="Username"><a href="{{user.get_absolute_url}}">{{user.username}}</a></td>
-        <td data-th="ID">{{user.id}}</td>
-        <td data-th="Name">{{user.name}}</td>
-        <td data-th="Created At">{{user.created_at}}</td>
-    </tr>
-    {% endfor %}
-</table>
+    {% block body %}
+    <div class="allusers"> 
+        {% for user in users %}
+        <div class="card">
+            <br>
+            <img src="{{user.profile_img}}" alt="Profile Image" width="240px" height="240px" class="clip-circle">
+
+            <h1><a href="{{user.profile_url}}">{{user.username}}
+            {% if user.verified %}
+            <img src="{% static 'user/verified.png' %}" alt="verified" width="30px" height="30px">
+            {% endif %}
+            </a></h1>
+            <p>
+            Created at: {{user.created_at}} <br>
+            Followers: {{user.followers_count}}<br>
+            Following: {{user.following_count}}, 
+            Tweets: {{user.tweet_count}}
+            </p>
+        </div>
+
+        {% endfor %}
+    </div>
+    {% endblock %}
 {% endif %}
-{% endblock %}
+
+{% block logo %}{% endblock %}
+    {% block header_txt %}
+    <div>
+    {% if not users %}
+        <img src="{% static 'user/spongebob.jpg' %}">
+    {% elif users %}
+    <h1 style="color:white;"> Users </h1>
+    {% endif %}
+    </div>
+    {% endblock %}
