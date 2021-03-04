@@ -6,15 +6,17 @@ import chart_studio.tools as tls
 from django.conf import settings
 import os
 import string
+import logging
 from wordcloud import WordCloud, STOPWORDS
 from nltk.tokenize import TweetTokenizer
+import time
 
 # Global Settings
 cdm = {"Positive": "Blue", "Negative": "Red"}
 co ={"sentiment": ["Positive", "Negative"]}
 tweetTokenizer = TweetTokenizer(strip_handles=True, preserve_case=False)
 stopwords = set(STOPWORDS)
-
+logger = logging.getLogger(__name__)
 
 def plotly_url(data,user, freq='D'):
     """
@@ -28,6 +30,8 @@ def plotly_url(data,user, freq='D'):
     try:
         user_plotly = os.environ.get('PLOTLY_USER')
         api = os.environ.get('PLOTLY_API')
+        assert len(api) > 0
+        assert len(user_plotly) > 0
 
         # Make dataframe and group by month
         df = pd.DataFrame(data)
@@ -48,6 +52,7 @@ def plotly_url(data,user, freq='D'):
 
         # Plotly
         tls.set_credentials_file(username=user_plotly,api_key=api)
+
         user_bar = px.bar(df_u, x="created_at", y="total", color="sentiment",barmode="group", category_orders=co,labels={'created_at':'Date','total':'Total'}, title=f'{user}: Tweets',hover_data=df_u.columns)
 
         # Plot rolling averages
@@ -55,10 +60,13 @@ def plotly_url(data,user, freq='D'):
         user_bar.add_trace(go.Scatter(x=df_u[df_u['sentiment']=='Positive']['created_at'],y=df_u[df_u['sentiment']=='Positive']['proll_7'], name='proll_7'))
 
         url = py.plot(user_bar, filename=f'{user}_tweets_{freq}',auto_open=False)
+        time.sleep(5)
+        
 
         return tls.get_embed(url)
+
     except Exception as e:
-        print(f'plotly_url error: {e}')
+        logger.error(f'plotly_url error: {e}')
 
 def gen_word_cloud(data,user):
     """
@@ -69,10 +77,11 @@ def gen_word_cloud(data,user):
     tweets = df['text'].str.cat(sep=' ')
 
     # Remove punctuation
-    tweets = tweets.translate(str.maketrans('', '', string.punctuation))
+    # tweets = tweets.translate(str.maketrans('', '', string.punctuation))
 
     tweets = tweetTokenizer.tokenize(tweets)
-    tweets = list(filter(lambda x: all([c.isalpha() for c in x]), tweets))
+    # tweets = list(filter(lambda x: any([c.isalpha() for c in x]), tweets))
+    tweets = list(filter(lambda x: not x.startswith('http') and not x.startswith('rt'), tweets))
     tweets = ' '.join(tweets)
     wordcloud = WordCloud(width = 800, height = 800, 
                     background_color ='white', 

@@ -90,8 +90,6 @@ class TwitGet():
                 except Exception as e:
                     self.tweet_params.update({'pagination_token':None})
 
-            if pagination_count != int(tweetCount/100):
-                self.logger.info('Reached end of content from user before specified request amount.')
             return tweets
         else:
             return []

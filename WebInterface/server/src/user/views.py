@@ -10,7 +10,8 @@ import logging
 import os
 import json
 
-NUM_TWEETS = 500
+NUM_TWEETS = 100
+logger = logging.getLogger(__name__)
 
 try:
     if 'BEARER_TOKEN' in os.environ:
@@ -18,7 +19,7 @@ try:
     else:
         logging.error('BEARER_TOKEN NOT FOUND')
 except EnvironmentError as e:
-    print(e)
+    logger.error(e)
 
 
 
@@ -57,9 +58,11 @@ def user(request, user):
     if len(UserTweet.objects.filter(user=new_user)) < NUM_TWEETS:
         try:
             analyzer = SentimentAnalyzer()
+            logger.debug("Getting tweets from Twitter")
             tweets = tweety.get_tweets(new_user.id,NUM_TWEETS) # list of dicts containing tweets    
             if tweets:
                 tweets_txt = [x['text'] for x in tweets] # get list of tweets
+                logger.debug('Predicting sentiment')
                 predict = analyzer.predict(tweets_txt) # returns list of tuples i.e. (text,sentiment,confidence)
                 [x.update({'sentiment':y[1],'confidence':y[2],'user':new_user}) for (x,y) in list(zip(tweets,predict))]
                 for tweet in tweets:
@@ -67,13 +70,15 @@ def user(request, user):
                     twt_obj.save()
                 
         except Exception as e:
+            logger.error(e)
             return HttpResponse(f'Tweet Exception: {e}')
 
     tweets = UserTweet.objects.filter(user=new_user)
 
     # Gets the url of the plotly chart, default freq is H: hours
+    logger.debug("Getting plotly graph")
     bar_plotly = plotly_url(list(tweets.values('created_at', 'user_id','sentiment')),user, freq='D')
-
+    
     
     wc = gen_word_cloud(list(tweets.values('text')),user)
 
