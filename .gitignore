@@ -137,3 +137,5 @@ dmypy.json
 *.npy
 .DS_Store
 *.npz
+SentimentAnalysis/out
+
