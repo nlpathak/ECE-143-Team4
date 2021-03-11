@@ -32,10 +32,37 @@ To launch the web server you must have [docker](https://docs.docker.com/desktop/
 
 Once installed, to build the containers you need to be in the root directory and type:
 `docker-compose up --build`
-This will intialize the docker containers and install the required python modules. Alternatively, drop the --build to open/run the containers in their current state.
+This will intialize the docker containers and install the required python modules. Alternatively, drop the --build to open/run the containers in their current state. If you run into issues here it is typically because of an old container or conflict in the database.
+
+In order to hop into the docker container shell yoyu can enter:
+`docker exec -ti web-serv /bin/bash` in a seperate terminal. This will open bash inside the docker container where you can run some Django commands.
+
+To make/merge changes in the database you can run:
+`python manage.py makemigrations`
+`python manage.py migrate`
+This automatically generates the sql statements to make the changes you've made to models.py in one of the apps.
 
 By default the web server is on port: 8000.
 The website can be loaded by going to: [**http://localhost:8000/**](http://localhost:8000/)
+
+---
+
+## Twitter WebApp
+The Twitter web app has many features such as:
+- User query
+- Tweet Checker
+- Word Comparison
+- Database Handling
+- etc.
+These are all on their on seperate pages on the web app and can typically be accessed with just the press of a button.
+In order to use the plotly display you **must** create a plotly account and have the following as environment variables:
+PLOTLY_USER
+PLOTLY_API
+
+Some additional functionality that can be added in the future:
+- Field to customize ammount of tweets pulled
+- Field to customize tweets viewed in plot
+
 
 ---
 
