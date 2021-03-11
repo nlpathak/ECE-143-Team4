@@ -2,6 +2,8 @@
   * [Sentiment Analysis Models](#sentiment-analysis-models)
   * [Twitter API](#twitter-api)
   * [Web Server](#web-server)
+  * [Functions](#functions)
+  * [Third-Party Modules Used](#third-party-modules-used)
 
 
 # Twitter Real-Time Sentiment Analysis
@@ -34,3 +36,29 @@ This will intialize the docker containers and install the required python module
 
 By default the web server is on port: 8000.
 The website can be loaded by going to: [**http://localhost:8000/**](http://localhost:8000/)
+
+---
+
+## Functions
+TODO: Chris, Sonya
+
+---
+
+## Third-Party Modules Used
+- numpy
+- scikit-learn
+- Django>=3.0,<4.0
+- pandas
+- psycopg2-binary>=2.8
+- requests
+- django_compressor==2.2
+- django-libsass==0.7
+- Pillow
+- scipy
+- gensim
+- nltk
+- plotly
+- chart_studio
+- seaborn
+- matplotlib
+- wordcloud
