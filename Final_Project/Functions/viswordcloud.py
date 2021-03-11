@@ -2,7 +2,6 @@ from wordcloud import WordCloud, STOPWORDS, get_single_color_func
 import matplotlib.pyplot as plt 
 import pandas as pd
 import pickle
-import gensim
 import get_users_with_bearer_token
 import user_tweets
 from collections import Counter
@@ -11,11 +10,13 @@ from datetime import date
 import ModelFunctions as MF
 import string
 import time
+from time import sleep
+from tqdm import tqdm
+import nltk
 
-
+# import pickled data
 TfIdf_Model = pickle.load(open('tfidf_model.pickle', 'rb'))
 TfIdf_Vectorizer = pickle.load(open('tfidf_vect.pickle', 'rb'))
-w2v = gensim.models.Word2Vec.load('word2vec.model')
 
 CountVect_Model = pickle.load(open('count_vect_model.pickle', 'rb'))
 CountVect_Vect = pickle.load(open('count_vectorizer.pickle', 'rb'))
@@ -58,7 +59,8 @@ while input("new search? (y/n): ") == 'y':
     while input('Username found: ' + userDat['data'][0]['name'] + '. Proceed with search? (y/n): ') != 'y':
         username = input("Input twitter username: ")
         userDat = get_users_with_bearer_token.main(username)
-    tweetCount = int(input("Input quantity of most recent tweets to analyze (100-3,200 in 100 intervals): "))
+    tweetCount = 100
+    print("Input quantity of most recent tweets to analyze (100-3,200 in 100 intervals): ")
     assert isinstance(tweetCount, int) and 100 <= tweetCount <= 3200
     
     if input('Select the model to use: Tf-Idf (1) or Count Vectorizer (2): ') == '1':
@@ -69,9 +71,10 @@ while input("new search? (y/n): ") == 'y':
         model = CountVect_Model
         vectorizer = CountVect_Vect
         modelLabel = 'Count Vectorizer'
-    print('Retrieving up to ', tweetCount, ' of the most recent tweets of user: ', userDat['data'][0]['name'], '...')
+    print('Retrieving 100 of the most recent tweets of user: ', userDat['data'][0]['name'], '...')
     
     userTweets, tweetDates = user_tweets.main(userDat['data'][0]['id'], tweetCount)
+    # strip punctuation
     userTweets = [''.join(c for c in s if c not in string.punctuation) for s in userTweets]
     tweetWords = [word for line in userTweets for word in line.split()]
     wordCounter = Counter({})
@@ -79,18 +82,27 @@ while input("new search? (y/n): ") == 'y':
     tweetObj = MF.predict(userTweets, vectorizer, model, silence=True)
     
     stopwords = set(STOPWORDS) 
-    wordCounterDict = dict(wordCounter)
-    listDict = list(wordCounterDict.keys())  
-    # start_time = time.time()
     redlist = []
     greenlist = []
     
-    for i, word in enumerate(listDict):
-        if wordCounterDict[word] < 2 or word == 'amp':
+    # count word frequency
+    wordCounterDict1 = dict(wordCounter)
+    wordCounterDict1 = dict(sorted(wordCounterDict1.items(), key=lambda item: item[1], reverse=True))
+    listDict1 = list(wordCounterDict1.keys())
+    wordCounterDict = wordCounterDict1
+    listDict = list(wordCounterDict.keys())
+    
+    print('Parsing tweets to generate word cloud...')
+    for i, word in enumerate(tqdm(listDict)):
+        if wordCounterDict[word] < 2:
+            wordCounterDict.pop(word, None)
+        # twitter reads ampersands oddly so manually convert to &
+        if word == 'amp':
             wordCounterDict.pop(word, None)
         elif word in vectorizer.get_feature_names():
             index = vectorizer.get_feature_names().index(word)
             rating = model.coef_[0, index]
+            # assign as green or red based on prediction
             if rating > 0:
                 greenlist.append(word)
             else:
@@ -98,24 +110,27 @@ while input("new search? (y/n): ") == 'y':
         else: 
             rating = 0
             wordCounterDict.pop(word, None)
-            
-    #print("--- %s seconds ---" % (time.time() - start_time))
 
-    wc = WordCloud(width = 1200, height = 800, 
-                        max_words = 100,
+
+##########################################################################################
+
+
+    wc = WordCloud(width = 800, height = 600, 
+                        max_words = 50,
                         min_word_length = 3,
-                        min_font_size = 10)
+                        background_color = '#dcf0f7',
+                        min_font_size = 12)
     wc.generate_from_frequencies(frequencies=wordCounterDict)
 
     color_to_words = {
         # postive words below will be colored green
-        'green': greenlist,
+        '#00ff00': greenlist,
         # negative  words will be colored red
-        'red': redlist
+        '#ff0000': redlist
     }
 
     # create word cloud with color mapping
-    colorwc = ColorWC(color_to_words, 'grey')
+    colorwc = ColorWC(color_to_words, '#CCC5C5')
     wc.recolor(color_func=colorwc)
 
     # plot word cloud
