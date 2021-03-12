@@ -44,9 +44,14 @@ while input("new search? (y/n): ") == 'y':
     tweetCount = int(input("Input quantity of most recent tweets to analyze (100-3,200 in 100 intervals): "))
     assert isinstance(tweetCount, int) and 100 <= tweetCount <= 3200, "Tweet count must be an int between 3,200 and 100"
 
-    model = CountVect_Model
-    vectorizer = CountVect_Vect
-    modelLabel = 'Count Vectorizer'
+    if input('Select the model to use: Tf-Idf (1) or Count Vectorizer (2): ') == '1':
+        model = TfIdf_Model
+        vectorizer = TfIdf_Vectorizer
+        modelLabel = 'Tf-Idf'
+    else:
+        model = CountVect_Model
+        vectorizer = CountVect_Vect
+        modelLabel = 'Count Vectorizer'
 
     print('Retrieving up to ', tweetCount, ' of the most recent tweets of user: ', userDat['data'][0]['name'], '...')
     userTweets, tweetDates = user_tweets.main(userDat['data'][0]['id'], tweetCount)
