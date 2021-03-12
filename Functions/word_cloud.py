@@ -27,7 +27,7 @@ CountVect_Vect = pickle.load(open('count_vectorizer.pickle', 'rb'))
 
 class ColorWC(object):
     '''
-    gives red or green coloring to colors in word map based on positive or negative rating
+    Class colors words red or green in word map based on positive or negative rating.
     '''
     
     def __init__(self, color_to_words, default_color):
@@ -48,8 +48,6 @@ class ColorWC(object):
     def __call__(self, word, **kwargs):
         return self.get_color_func(word)(word, **kwargs)
 
-
-##########################################################################################
 
 
 while input("new search? (y/n): ") == 'y':
@@ -112,7 +110,6 @@ while input("new search? (y/n): ") == 'y':
             wordCounterDict.pop(word, None)
 
 
-##########################################################################################
 
 
     wc = WordCloud(width = 800, height = 600, 
