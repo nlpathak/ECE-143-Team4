@@ -90,13 +90,14 @@ To use this function, the user is prompted for their bearer token. It will proce
 ![alt text](https://github.com/whistlepark/ECE-143-Team4/blob/main/fox5sandiego.png?raw=true)
 
 ### Tweet Checker
-To use this function, simply input your tweet and select which model to use. An example of the result is shown:
+To use this function, input your tweet and select which model to use. An example of the result is shown:
 
 ![alt text](https://github.com/whistlepark/ECE-143-Team4/blob/main/exampleTweet.png?raw=true)
 
-TODO: Chris, Sonya
+##TODO: Chris, Sonya
 
----
+### Word Cloud
+To use this function, input a username when prompted and a word cloud of the most frequent words of the user's past 100 tweets will be displayed. The words in the word cloud are colored colored green and red for whether the word is classified as positive or negative respectively. An example word cloud is shown:
 
 ## Third-Party Modules Used
 - numpy
