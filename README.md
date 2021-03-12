@@ -77,10 +77,12 @@ Some additional functionality that can be added in the future:
 
 ## Functions
 To use the functions as described below, you need to obtain trained models as detailed in Sentiment Analysis. There needs to be 4 pickled files with proper names:
--count_vect_model.pickle
--count_vectorizer.pickle
--tfidf_model.pickle
--tfidf_vect.pickle
+
+* count_vect_model.pickle
+* count_vectorizer.pickle
+* tfidf_model.pickle
+* tfidf_vect.pickle
+
 Additionally, you must have your bearer token at time of use. This is so that the user does not need to place their bearer tokens into their environment variables themselves.
 ### Chronological Tweets
 To use this function, the user is prompted for their bearer token. It will proceed to ask for a username, verification upon Twitter server response, the quantity of tweets to pull, and which model to use. Once finished, the most positive/negative tweets aswell as all tweets occuring on most positive/negative days will be displayed along with a figure such as:
