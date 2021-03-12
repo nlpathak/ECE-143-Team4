@@ -1,19 +1,14 @@
 import numpy as np
 
-def getExtremeWords(vectorizer, model):
-    feature_names = np.array(vectorizer.get_feature_names())
-    order = np.argsort(model.coef_)
-
-    print("Top 50 Most Negative Words/Phrases in Order:")
-    print(feature_names[order[0, :50]])
-    print()
-    print("Top 50 Most Positive Words/Phrases in Order:")
-    print(feature_names[order[0, -50:]][::-1])
-
-    return feature_names[order[0, :50]], feature_names[order[0, -50:]][::-1]  # negative, positive
-
-
 def predict(tweets, vectorizer, model, silence=False):
+    '''
+        Returns the predictions and confidence of the predictions for each tweet given
+
+        :param tweets: list of tweets to predict on
+        :type tweets: list of str
+        :param model: the trained LogisticRegression classifier
+        :type model: LogisticRegression
+        '''
     #tweets of type list
     tweet_vectors = vectorizer.transform(tweets)
     preds = model.predict_proba(tweet_vectors)
@@ -27,22 +22,4 @@ def predict(tweets, vectorizer, model, silence=False):
             print(f'Confidence of {pred} Prediction (0 to 1): {np.max(preds[i])}')
             print()
         returnList.append((tweet, pred, np.max(preds[i])))
-    return returnList
-
-
-def analyzeTweets(tweets, vectorizer, model):
-    returnList = []
-    for tweet in tweets:
-        tweetList = []
-        for word in tweet.split():
-            word = word.lower()
-            if word in vectorizer.get_feature_names():
-                index = vectorizer.get_feature_names().index(word)
-                #print(f'Word: {word}, Connotation: {model.coef_[0, index]:.3f}')
-                tweetList.append((word, model.coef_[0, index]))
-            else:  # not a top feature
-                #print(f'Word: {word}, Connotation: {0:.3f}')
-                tweetList.append((word, 0))
-        returnList.append(tweetList)
-        #print()
     return returnList

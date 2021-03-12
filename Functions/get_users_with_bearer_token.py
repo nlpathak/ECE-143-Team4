@@ -2,10 +2,6 @@ import requests
 import os
 import json
 
-# To set your enviornment variables in your terminal run the following line:
-# export 'BEARER_TOKEN'='<your_bearer_token>'
-
-
 def auth():
     return os.environ.get("BEARER_TOKEN")
 
@@ -41,6 +37,11 @@ def connect_to_endpoint(url, headers):
 
 
 def main(username):
+    '''
+    This function returns the twitter username handle with a valid username
+    :param username: str
+    :return:
+    '''
     bearer_token = auth()
     url = create_url(username)
     headers = create_headers(bearer_token)

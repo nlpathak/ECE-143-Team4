@@ -1,9 +1,5 @@
-import get_users_with_bearer_token
-import user_tweets
 import pickle
-import gensim
-import ModelFunctions as MF
-from datetime import date
+import model_functions as MF
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.cm as cm
