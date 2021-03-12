@@ -142,4 +142,4 @@ while input("new search? (y/n): ") == 'y':
         plt.ylabel('tweet count', fontsize=25)
     plt.show()
 
-exit('Thank you for using Chronological Tweet analyzer')
+print('Thank you for using Chronological Tweet analyzer')

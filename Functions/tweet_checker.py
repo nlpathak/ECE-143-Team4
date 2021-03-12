@@ -49,4 +49,4 @@ while userText != 'end':
     plt.show()
     userText = input('Type your tweet (up to 280 characters) to check positivity or \'end\' if you\'re done: ')
 
-exit('Thank you for using Tweet Checker!')
+print('Thank you for using Tweet Checker!')
