@@ -76,7 +76,7 @@ Some additional functionality that can be added in the future:
 ---
 
 ## Functions
-To use the functions as described below, you need to obtain trained models as detailed in Sentiment Analysis. There needs to be 4 pickled files with proper names:
+To use the functions as described below, you need to obtain trained models as detailed in Sentiment Analysis. There needs to be 4 pickled files under the \Functions folder with proper names:
 
 * count_vect_model.pickle
 * count_vectorizer.pickle
