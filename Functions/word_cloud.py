@@ -22,7 +22,6 @@ CountVect_Model = pickle.load(open('count_vect_model.pickle', 'rb'))
 CountVect_Vect = pickle.load(open('count_vectorizer.pickle', 'rb'))
 
 
-##########################################################################################
 
 
 class ColorWC(object):
