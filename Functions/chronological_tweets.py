@@ -99,23 +99,23 @@ while input("new search? (y/n): ") == 'y':
             1].day:
             mostNeg[2].append(userTweets[tIdx])
 
-        # Most Positive Day/ tweet
-        print('-------------------------------------------------------------')
-        print('Showing all tweets on most positive day, ', str(mostPos[1]), ': \n')
-        for tIdx in range(len(mostPos[2])):
-            print(mostPos[2][tIdx])
-        print('\nThe most positive tweet: \n')
-        print(userTweets[mostPos[3]])
-        print('-------------------------------------------------------------\n')
+    # Most Positive Day/ tweet
+    print('-------------------------------------------------------------')
+    print('Showing all tweets on most positive day, ', str(mostPos[1]), ': \n')
+    for tIdx in range(len(mostPos[2])):
+        print(mostPos[2][tIdx])
+    print('\nThe most positive tweet: \n')
+    print(userTweets[mostPos[3]])
+    print('-------------------------------------------------------------\n')
 
-        # Most Negative Day/ tweet
-        print('-------------------------------------------------------------')
-        print('Showing all tweets on most negative day, ', str(mostNeg[1]), ': \n')
-        for tIdx in range(len(mostNeg[2])):
-            print(mostNeg[2][tIdx])
-        print('\nThe most negative tweet: \n')
-        print(userTweets[mostNeg[3]])
-        print('-------------------------------------------------------------')
+    # Most Negative Day/ tweet
+    print('-------------------------------------------------------------')
+    print('Showing all tweets on most negative day, ', str(mostNeg[1]), ': \n')
+    for tIdx in range(len(mostNeg[2])):
+        print(mostNeg[2][tIdx])
+    print('\nThe most negative tweet: \n')
+    print(userTweets[mostNeg[3]])
+    print('-------------------------------------------------------------')
 
     #plotting data
     cmap = cm.get_cmap('RdYlGn')
