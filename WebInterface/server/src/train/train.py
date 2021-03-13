@@ -20,7 +20,12 @@ class SentimentAnalyzer:
 
     def getExtremeWords(self):
         '''
-        Returns top 50 negative and positive words.
+        Returns most extreme positive and negative words/phrases learned by the model
+
+        :param vectorizer: the trained vectorizer used for the model data
+        :type vectorizer: CountVectorizer or TfidfVectorizer
+        :param model: the trained LogisticRegression classifier
+        :type model: LogisticRegression
         '''
         feature_names = np.array(self.read_vect.get_feature_names())
         order = np.argsort(self.read_model.coef_)
@@ -32,6 +37,12 @@ class SentimentAnalyzer:
         return extreme
 
     def predict(self, tweets):
+        '''
+        Returns the predictions and confidence of the predictions for each tweet given
+        :param tweets: list of tweets to predict on
+        :type tweets: list of str
+        '''
+        assert isinstance(tweets, list) and all([isinstance(tweet, str) for tweet in tweets])
         tweet_vectors = self.read_vect.transform(tweets)
         predictions = self.read_model.predict_proba(tweet_vectors)
         sentiment = list(map(lambda x: "Negative" if np.argmax(x) == 0 else "Positive", predictions))
@@ -42,7 +53,7 @@ class SentimentAnalyzer:
 
     def analyzeTweets(self, tweets):
         """
-        Analyzes tweets and returns a list of ...
+        Returns per word connotations of a tweet.
         :param tweets:
         :param self.read_vect:
         :param model:
@@ -64,8 +75,13 @@ class SentimentAnalyzer:
         return returnList
 
     def getMostSimilarWords(tweets, w2v_model):
-        """
-        """
+        '''
+        For each word in each tweet, return the most similar learned words to that word along with the similarity score
+        :param tweets: list of tweets to analyze
+        :type tweets: list of str
+        :param w2v_model: the trained Word2Vec Model
+        :type model: Word2Vec
+        '''
         nltk.download('punkt')
         returnList = []
         for tweet in tweets:
