@@ -2,13 +2,14 @@ import numpy as np
 
 def predict(tweets, vectorizer, model, silence=False):
     '''
-        Returns the predictions and confidence of the predictions for each tweet given
+    Returns the predictions and confidence of the predictions for each tweet given
 
-        :param tweets: list of tweets to predict on
-        :type tweets: list of str
-        :param model: the trained LogisticRegression classifier
-        :type model: LogisticRegression
-        '''
+    :param tweets: list of tweets to predict on
+    :type tweets: list of str
+    :param model: the trained LogisticRegression classifier
+    :type model: LogisticRegression
+    '''
+    
     #tweets of type list
     tweet_vectors = vectorizer.transform(tweets)
     preds = model.predict_proba(tweet_vectors)
