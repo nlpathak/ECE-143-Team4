@@ -69,7 +69,7 @@ In order to use the plotly display you **must** create a plotly account and have
 - PLOTLY_API
 
 Some additional functionality that can be added in the future:
-- Field to customize ammount of tweets pulled
+- Field to customize amount of tweets pulled
 - Field to customize tweets viewed in plot
 
 
@@ -78,8 +78,8 @@ Some additional functionality that can be added in the future:
 ## Functions
 To use the functions as described below, you need to obtain trained models as detailed in Sentiment Analysis. There needs to be 4 pickled files under the \Functions folder with proper names:
 
-* count_vect_model.pickle
-* count_vectorizer.pickle
+* count_model.pickle
+* count_vect.pickle
 * tfidf_model.pickle
 * tfidf_vect.pickle
 
