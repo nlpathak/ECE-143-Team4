@@ -35,11 +35,11 @@ os.environ["BEARER_TOKEN"] = bearerToken
 while input("new search? (y/n): ") == 'y':
     #Data Collection
     username = input("Input twitter username: ")
-    assert 15 >= len(username) >= 4, "This is not a valid username. Length between 15 and 4 characters."
+    assert 15 >= len(username) >= 2, "This is not a valid username. Length between 15 and 2 characters."
     userDat = get_users_with_bearer_token.main(username)
     while input('Username found: ' + userDat['data'][0]['name'] + '. Proceed with search? (y/n): ') != 'y':
         username = input("Input twitter username: ")
-        assert 15 >= len(username) >= 4, "This is not a valid username. Length between 15 and 4 characters."
+        assert 15 >= len(username) >= 2, "This is not a valid username. Length between 15 and 2 characters."
         userDat = get_users_with_bearer_token.main(username)
     tweetCount = int(input("Input quantity of most recent tweets to analyze (100-3,200 in 100 intervals): "))
     assert isinstance(tweetCount, int) and 100 <= tweetCount <= 3200, "Tweet count must be an int between 3,200 and 100"
