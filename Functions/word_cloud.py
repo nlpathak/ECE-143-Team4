@@ -7,12 +7,12 @@ import user_tweets
 from collections import Counter
 import numpy as np
 from datetime import date
-import ModelFunctions as MF
+import model_functions as MF
 import string
 import time
 from time import sleep
-from tqdm import tqdm
 import nltk
+import os
 
 # import pickled data
 TfIdf_Model = pickle.load(open('tfidf_model.pickle', 'rb'))
@@ -54,11 +54,8 @@ while input("new search? (y/n): ") == 'y':
     userDat = get_users_with_bearer_token.main(username)
     
     while input('Username found: ' + userDat['data'][0]['name'] + '. Proceed with search? (y/n): ') != 'y':
-        username = input("Input twitter username: ")
         userDat = get_users_with_bearer_token.main(username)
     tweetCount = 100
-    print("Input quantity of most recent tweets to analyze (100-3,200 in 100 intervals): ")
-    assert isinstance(tweetCount, int) and 100 <= tweetCount <= 3200
     
     if input('Select the model to use: Tf-Idf (1) or Count Vectorizer (2): ') == '1':
         model = TfIdf_Model
@@ -90,10 +87,10 @@ while input("new search? (y/n): ") == 'y':
     listDict = list(wordCounterDict.keys())
     
     print('Parsing tweets to generate word cloud...')
-    for i, word in enumerate(tqdm(listDict)):
+    for i, word in enumerate(listDict):
         if wordCounterDict[word] < 2:
             wordCounterDict.pop(word, None)
-        # twitter reads ampersands oddly so manually convert to &
+        # twitter reads ampersands oddly so pop off amp
         if word == 'amp':
             wordCounterDict.pop(word, None)
         elif word in vectorizer.get_feature_names():
