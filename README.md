@@ -87,12 +87,12 @@ Additionally, you must have your bearer token at time of use. This is so that th
 ### Chronological Tweets
 To use this function, the user is prompted for their bearer token. It will proceed to ask for a username, verification upon Twitter server response, the quantity of tweets to pull, and which model to use. Once finished, the most positive/negative tweets aswell as all tweets occuring on most positive/negative days will be displayed along with a figure such as:
 
-![alt text](https://github.com/whistlepark/ECE-143-Team4/blob/main/fox5sandiego.png?raw=true)
+![alt text](https://github.com/whistlepark/ECE-143-Team4/blob/main/ReadmeImages/fox5sandiego.png?raw=true)
 
 ### Tweet Checker
 To use this function, input your tweet and select which model to use. An example of the result is shown:
 
-![alt text](https://github.com/whistlepark/ECE-143-Team4/blob/main/exampleTweet.png?raw=true)
+![alt text](https://github.com/whistlepark/ECE-143-Team4/blob/main/ReadmeImages/exampleTweet.png?raw=true)
 
 ##TODO: Chris, Sonya
 
