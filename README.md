@@ -76,20 +76,28 @@ Some additional functionality that can be added in the future:
 ---
 
 ## Functions
+To use the functions as described below, you need to obtain trained models as detailed in Sentiment Analysis. There needs to be 4 pickled files under the \Functions folder with proper names:
 
+* count_vect_model.pickle
+* count_vectorizer.pickle
+* tfidf_model.pickle
+* tfidf_vect.pickle
+
+Additionally, you must have your bearer token at time of use. This is so that the user does not need to place their bearer tokens into their environment variables themselves.
 ### Chronological Tweets
 To use this function, the user is prompted for their bearer token. It will proceed to ask for a username, verification upon Twitter server response, the quantity of tweets to pull, and which model to use. Once finished, the most positive/negative tweets aswell as all tweets occuring on most positive/negative days will be displayed along with a figure such as:
 
 ![alt text](https://github.com/whistlepark/ECE-143-Team4/blob/main/fox5sandiego.png?raw=true)
 
 ### Tweet Checker
-To use this function, simply input your tweet and select which model to use. An example of the result is shown:
+To use this function, input your tweet and select which model to use. An example of the result is shown:
 
 ![alt text](https://github.com/whistlepark/ECE-143-Team4/blob/main/exampleTweet.png?raw=true)
 
-TODO: Chris, Sonya
+##TODO: Chris, Sonya
 
----
+### Word Cloud
+To use this function, input a username when prompted and a word cloud of the most frequent words of the user's past 100 tweets will be displayed. The words in the word cloud are colored colored green and red for whether the word is classified as positive or negative respectively. An example word cloud is shown:
 
 ## Third-Party Modules Used
 - numpy
