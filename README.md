@@ -31,7 +31,7 @@ If you run into issues with the web-serv container not finding your token please
 ## Web Server
 To launch the web server you must have [docker](https://docs.docker.com/desktop/) and [docker-compose](https://docs.docker.com/compose/) installed on your machine.
 
-Once installed, to build the containers you need to be in the root directory and type:
+Once installed, to build the containers you need to be in the WebInterface directory where the docker-compose.yml file is located and type:
 
 `docker-compose up --build`
 
