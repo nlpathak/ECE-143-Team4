@@ -9,6 +9,12 @@
 
 # Twitter Real-Time Sentiment Analysis
 
+Below, we detail the specific aspects of our final project, including how to run our code for training/evaluating models, producing visualizations, and starting the web application. 
+
+The files for training and evaluating the Sentiment Analysis model are located in the SentimentAnalysis folder. The code for producing most of our visualizations (including the chronological graphs and word clouds) is located in the Functions folder. Finally, the code for running our webapp which integrates more visualizations is located in the WebInterface folder. 
+
+In the root of the repository, we also have our final presentation PDF, our final presentation visualizations notebook, and our group assignment (test cases) notebook.
+
 ## Sentiment Analysis Models
 Download the [dataset](https://www.kaggle.com/kazanova/sentiment140) used for the training of the Sentiment Analysis models. 
 
