@@ -18,7 +18,7 @@ import os
 TfIdf_Model = pickle.load(open('tfidf_model.pickle', 'rb'))
 TfIdf_Vectorizer = pickle.load(open('tfidf_vect.pickle', 'rb'))
 
-CountVect_Model = pickle.load(open('count_vect_model.pickle', 'rb'))
+CountVect_Model = pickle.load(open('count_model.pickle', 'rb'))
 CountVect_Vect = pickle.load(open('count_vect.pickle', 'rb'))
 
 
