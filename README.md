@@ -1,3 +1,5 @@
+This was a final project for a UCSD class. In this group project, I provided the Sentiment Analysis models that served as the basis for our tweet and Twitter account analysis through visualizations. 
+
 - [Twitter Real-Time Sentiment Analysis](#twitter-real-time-sentiment-analysis)
   * [Sentiment Analysis Models](#sentiment-analysis-models)
   * [Twitter API](#twitter-api)
